@@ -8,11 +8,37 @@
 import SwiftUI
 
 struct ToolbarPrincipalView: View {
+    @Binding var x : CGFloat
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HStack {
+                Button(action: {
+                    withAnimation{
+                        x = 0
+                    }
+                }){
+                    Image(systemName: "line.horizontal.3")
+                        .font(.system(size: 24))
+                        .foregroundColor(Color.blue)
+                }
+                Spacer(minLength: 0)
+                
+                Text("Servicios")
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                
+                Spacer(minLength: 0)
+            }
+            .padding()
+            .background(Color.white)
+            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
+            
+        }
+           
+      
+        .contentShape(Rectangle())
+        .background(Color.white)
     }
 }
 
-#Preview {
-    ToolbarPrincipalView()
-}
+

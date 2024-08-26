@@ -1,0 +1,6 @@
+framework module Pods_NorteGo_NorteGoUITests {
+  umbrella header "Pods-NorteGo-NorteGoUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

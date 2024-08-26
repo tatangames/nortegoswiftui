@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct NorteGoApp: App {
+        
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashScreenView().preferredColorScheme(.light)
         }
     }
 }

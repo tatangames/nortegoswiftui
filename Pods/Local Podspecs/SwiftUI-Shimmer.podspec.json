@@ -1,0 +1,26 @@
+{
+  "name": "SwiftUI-Shimmer",
+  "version": "1.4.0",
+  "summary": "Shimmer is a super-light modifier that adds a shimmering effect to any SwiftUI View, for example, to show that an operation is in progress.",
+  "homepage": "https://github.com/markiv/SwiftUI-Shimmer",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Vikram Kriplaney": "vikram@kriplaney.com"
+  },
+  "source": {
+    "git": "https://github.com/markiv/SwiftUI-Shimmer.git",
+    "tag": "1.4.0"
+  },
+  "platforms": {
+    "ios": "13.0",
+    "osx": "10.15",
+    "watchos": "6.0",
+    "tvos": "13.0"
+  },
+  "swift_versions": "5.0",
+  "source_files": "Sources/Shimmer/**/*",
+  "swift_version": "5.0"
+}

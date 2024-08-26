@@ -7,13 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		152B34EFB3FDFFA30A464E47 /* Pods_NorteGo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F5F74A004DE0153E77970F9 /* Pods_NorteGo.framework */; };
+		7BC6FDB0152C8A76593D2EEC /* Pods_NorteGo_NorteGoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D063BC8B810ECF68399660E /* Pods_NorteGo_NorteGoUITests.framework */; };
+		8F05E88D2C72749700F720A3 /* PopImg2BtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F05E88C2C72749700F720A3 /* PopImg2BtnView.swift */; };
+		8F05E88F2C72807F00F720A3 /* PopImg1BtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F05E88E2C72807F00F720A3 /* PopImg1BtnView.swift */; };
+		8F05E8912C72A79500F720A3 /* StructReutilizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F05E8902C72A79500F720A3 /* StructReutilizable.swift */; };
+		8F05E8942C72E83800F720A3 /* ApiNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F05E8932C72E83800F720A3 /* ApiNetwork.swift */; };
+		8F0831B42C7AB46C00CCC0D7 /* ToolbarPrincipalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0831B32C7AB46C00CCC0D7 /* ToolbarPrincipalView.swift */; };
+		8F1B3F6D2C7B9A53002389C6 /* ModeloSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1B3F6C2C7B9A53002389C6 /* ModeloSlider.swift */; };
+		8F1B3F6F2C7B9A9B002389C6 /* ModeloTipoServicio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1B3F6E2C7B9A9B002389C6 /* ModeloTipoServicio.swift */; };
+		8F1B3F712C7BBA3E002389C6 /* ModeloTipoServicioArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1B3F702C7BBA3E002389C6 /* ModeloTipoServicioArray.swift */; };
+		8F2320852C756D7C0009F15A /* CodigoOtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2320842C756D7C0009F15A /* CodigoOtpView.swift */; };
+		8F2320872C757C3D0009F15A /* OTPInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2320862C757C3D0009F15A /* OTPInput.swift */; };
+		8F625A0C2C780E2300506617 /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F625A0B2C780E2300506617 /* SideMenuView.swift */; };
+		8F625A0E2C780E7500506617 /* SideMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F625A0D2C780E7500506617 /* SideMenuHeaderView.swift */; };
+		8F625A112C78116100506617 /* SideMenuRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F625A102C78116100506617 /* SideMenuRowView.swift */; };
+		8F625A132C78123200506617 /* SideMenuOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F625A122C78123200506617 /* SideMenuOptionModel.swift */; };
+		8F625A182C783B9E00506617 /* DenunciaBasicaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F625A172C783B9E00506617 /* DenunciaBasicaView.swift */; };
 		8F7CD8052C7019C200BD7410 /* NorteGoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CD8042C7019C200BD7410 /* NorteGoApp.swift */; };
-		8F7CD8072C7019C200BD7410 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CD8062C7019C200BD7410 /* ContentView.swift */; };
 		8F7CD8092C7019C300BD7410 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F7CD8082C7019C300BD7410 /* Assets.xcassets */; };
 		8F7CD80C2C7019C300BD7410 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F7CD80B2C7019C300BD7410 /* Preview Assets.xcassets */; };
 		8F7CD8162C7019C400BD7410 /* NorteGoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CD8152C7019C400BD7410 /* NorteGoTests.swift */; };
 		8F7CD8202C7019C400BD7410 /* NorteGoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CD81F2C7019C400BD7410 /* NorteGoUITests.swift */; };
 		8F7CD8222C7019C400BD7410 /* NorteGoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CD8212C7019C400BD7410 /* NorteGoUITestsLaunchTests.swift */; };
+		8F7CD8312C701C9800BD7410 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CD8302C701C9800BD7410 /* LoginView.swift */; };
+		8F7CD8332C701F4200BD7410 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CD8322C701F4200BD7410 /* SplashScreenView.swift */; };
+		8F7CD8362C7021B100BD7410 /* DatosGuardadosKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CD8352C7021B100BD7410 /* DatosGuardadosKeys.swift */; };
+		8F7CD8392C702A4C00BD7410 /* PrincipalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7CD8382C702A4C00BD7410 /* PrincipalView.swift */; };
+		8F7CD83F2C703C7200BD7410 /* liberation_sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F7CD83B2C703C7200BD7410 /* liberation_sans_bold.ttf */; };
+		8F7CD8402C703C7200BD7410 /* montserratregular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F7CD83C2C703C7200BD7410 /* montserratregular.ttf */; };
+		8F7CD8412C703C7200BD7410 /* medel.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F7CD83D2C703C7200BD7410 /* medel.ttf */; };
+		8F7CD8422C703C7200BD7410 /* montserratmedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F7CD83E2C703C7200BD7410 /* montserratmedium.ttf */; };
+		8FA4067F2C76EBB7000CFB32 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA4067E2C76EBB7000CFB32 /* TimerViewModel.swift */; };
+		8FDDDA052C70F8F40082E577 /* ListaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDDDA042C70F8F40082E577 /* ListaView.swift */; };
+		8FDDDA072C710DC10082E577 /* CustomModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDDDA062C710DC10082E577 /* CustomModalView.swift */; };
+		8FDDDA092C7147170082E577 /* LoadingSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDDDA082C7147170082E577 /* LoadingSpinnerView.swift */; };
+		8FDDDA0B2C7190920082E577 /* CustomModal2ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDDDA0A2C7190920082E577 /* CustomModal2ButtonView.swift */; };
+		C0834C18FFF2C674F0C40C27 /* Pods_NorteGoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8F823596527D34EBAB2F618 /* Pods_NorteGoTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +64,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		17B484BDCA6531D4D679D1CB /* Pods-NorteGo-NorteGoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NorteGo-NorteGoUITests.release.xcconfig"; path = "Target Support Files/Pods-NorteGo-NorteGoUITests/Pods-NorteGo-NorteGoUITests.release.xcconfig"; sourceTree = "<group>"; };
+		1D063BC8B810ECF68399660E /* Pods_NorteGo_NorteGoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NorteGo_NorteGoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		274E4AAB69448A59BD2A0789 /* Pods-NorteGoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NorteGoTests.release.xcconfig"; path = "Target Support Files/Pods-NorteGoTests/Pods-NorteGoTests.release.xcconfig"; sourceTree = "<group>"; };
+		3F5F74A004DE0153E77970F9 /* Pods_NorteGo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NorteGo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F05E88C2C72749700F720A3 /* PopImg2BtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopImg2BtnView.swift; sourceTree = "<group>"; };
+		8F05E88E2C72807F00F720A3 /* PopImg1BtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopImg1BtnView.swift; sourceTree = "<group>"; };
+		8F05E8902C72A79500F720A3 /* StructReutilizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructReutilizable.swift; sourceTree = "<group>"; };
+		8F05E8932C72E83800F720A3 /* ApiNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiNetwork.swift; sourceTree = "<group>"; };
+		8F0831B32C7AB46C00CCC0D7 /* ToolbarPrincipalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarPrincipalView.swift; sourceTree = "<group>"; };
+		8F1B3F6C2C7B9A53002389C6 /* ModeloSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloSlider.swift; sourceTree = "<group>"; };
+		8F1B3F6E2C7B9A9B002389C6 /* ModeloTipoServicio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloTipoServicio.swift; sourceTree = "<group>"; };
+		8F1B3F702C7BBA3E002389C6 /* ModeloTipoServicioArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloTipoServicioArray.swift; sourceTree = "<group>"; };
+		8F2320842C756D7C0009F15A /* CodigoOtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodigoOtpView.swift; sourceTree = "<group>"; };
+		8F2320862C757C3D0009F15A /* OTPInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPInput.swift; sourceTree = "<group>"; };
+		8F625A0B2C780E2300506617 /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
+		8F625A0D2C780E7500506617 /* SideMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuHeaderView.swift; sourceTree = "<group>"; };
+		8F625A102C78116100506617 /* SideMenuRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuRowView.swift; sourceTree = "<group>"; };
+		8F625A122C78123200506617 /* SideMenuOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOptionModel.swift; sourceTree = "<group>"; };
+		8F625A172C783B9E00506617 /* DenunciaBasicaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DenunciaBasicaView.swift; sourceTree = "<group>"; };
 		8F7CD8012C7019C200BD7410 /* NorteGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NorteGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F7CD8042C7019C200BD7410 /* NorteGoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorteGoApp.swift; sourceTree = "<group>"; };
-		8F7CD8062C7019C200BD7410 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8F7CD8082C7019C300BD7410 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8F7CD80B2C7019C300BD7410 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8F7CD8112C7019C400BD7410 /* NorteGoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NorteGoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +92,25 @@
 		8F7CD81B2C7019C400BD7410 /* NorteGoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NorteGoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F7CD81F2C7019C400BD7410 /* NorteGoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorteGoUITests.swift; sourceTree = "<group>"; };
 		8F7CD8212C7019C400BD7410 /* NorteGoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NorteGoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		8F7CD8302C701C9800BD7410 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		8F7CD8322C701F4200BD7410 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		8F7CD8352C7021B100BD7410 /* DatosGuardadosKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatosGuardadosKeys.swift; sourceTree = "<group>"; };
+		8F7CD8382C702A4C00BD7410 /* PrincipalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrincipalView.swift; sourceTree = "<group>"; };
+		8F7CD83B2C703C7200BD7410 /* liberation_sans_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = liberation_sans_bold.ttf; sourceTree = "<group>"; };
+		8F7CD83C2C703C7200BD7410 /* montserratregular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = montserratregular.ttf; sourceTree = "<group>"; };
+		8F7CD83D2C703C7200BD7410 /* medel.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = medel.ttf; sourceTree = "<group>"; };
+		8F7CD83E2C703C7200BD7410 /* montserratmedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = montserratmedium.ttf; sourceTree = "<group>"; };
+		8F7CD8432C703CF300BD7410 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8FA4067E2C76EBB7000CFB32 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
+		8FDDDA042C70F8F40082E577 /* ListaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListaView.swift; sourceTree = "<group>"; };
+		8FDDDA062C710DC10082E577 /* CustomModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomModalView.swift; sourceTree = "<group>"; };
+		8FDDDA082C7147170082E577 /* LoadingSpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSpinnerView.swift; sourceTree = "<group>"; };
+		8FDDDA0A2C7190920082E577 /* CustomModal2ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomModal2ButtonView.swift; sourceTree = "<group>"; };
+		B86083807E676F042D776410 /* Pods-NorteGo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NorteGo.release.xcconfig"; path = "Target Support Files/Pods-NorteGo/Pods-NorteGo.release.xcconfig"; sourceTree = "<group>"; };
+		C152E892C53E9159B96AD177 /* Pods-NorteGo-NorteGoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NorteGo-NorteGoUITests.debug.xcconfig"; path = "Target Support Files/Pods-NorteGo-NorteGoUITests/Pods-NorteGo-NorteGoUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		C3F2D79AB016D82E0C1EFAAF /* Pods-NorteGoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NorteGoTests.debug.xcconfig"; path = "Target Support Files/Pods-NorteGoTests/Pods-NorteGoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E8F823596527D34EBAB2F618 /* Pods_NorteGoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NorteGoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F742E4DD77429DCC2EFF96C5 /* Pods-NorteGo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NorteGo.debug.xcconfig"; path = "Target Support Files/Pods-NorteGo/Pods-NorteGo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				152B34EFB3FDFFA30A464E47 /* Pods_NorteGo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0834C18FFF2C674F0C40C27 /* Pods_NorteGoTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,12 +134,77 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BC6FDB0152C8A76593D2EEC /* Pods_NorteGo_NorteGoUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B45EA99FFED9C4466EDB1CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3F5F74A004DE0153E77970F9 /* Pods_NorteGo.framework */,
+				1D063BC8B810ECF68399660E /* Pods_NorteGo_NorteGoUITests.framework */,
+				E8F823596527D34EBAB2F618 /* Pods_NorteGoTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8F05E88B2C72746200F720A3 /* PopUp */ = {
+			isa = PBXGroup;
+			children = (
+				8F05E88C2C72749700F720A3 /* PopImg2BtnView.swift */,
+				8F05E88E2C72807F00F720A3 /* PopImg1BtnView.swift */,
+			);
+			path = PopUp;
+			sourceTree = "<group>";
+		};
+		8F05E8922C72E7D700F720A3 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8F05E8932C72E83800F720A3 /* ApiNetwork.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		8F1B3F6B2C7B9A40002389C6 /* Modelos */ = {
+			isa = PBXGroup;
+			children = (
+				8F1B3F6C2C7B9A53002389C6 /* ModeloSlider.swift */,
+				8F1B3F6E2C7B9A9B002389C6 /* ModeloTipoServicio.swift */,
+				8F1B3F702C7BBA3E002389C6 /* ModeloTipoServicioArray.swift */,
+			);
+			path = Modelos;
+			sourceTree = "<group>";
+		};
+		8F5C7B0E2C739EE8004E7A62 /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
+		8F625A0A2C780E1000506617 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				8F625A102C78116100506617 /* SideMenuRowView.swift */,
+				8F625A0B2C780E2300506617 /* SideMenuView.swift */,
+				8F625A0D2C780E7500506617 /* SideMenuHeaderView.swift */,
+				8F625A122C78123200506617 /* SideMenuOptionModel.swift */,
+				8F0831B32C7AB46C00CCC0D7 /* ToolbarPrincipalView.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		8F625A142C78383C00506617 /* Opciones */ = {
+			isa = PBXGroup;
+			children = (
+				8F625A172C783B9E00506617 /* DenunciaBasicaView.swift */,
+			);
+			path = Opciones;
+			sourceTree = "<group>";
+		};
 		8F7CD7F82C7019C100BD7410 = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +212,8 @@
 				8F7CD8142C7019C400BD7410 /* NorteGoTests */,
 				8F7CD81E2C7019C400BD7410 /* NorteGoUITests */,
 				8F7CD8022C7019C200BD7410 /* Products */,
+				98E5B7BAB9D4F4C3B430C9AE /* Pods */,
+				7B45EA99FFED9C4466EDB1CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,8 +230,14 @@
 		8F7CD8032C7019C200BD7410 /* NorteGo */ = {
 			isa = PBXGroup;
 			children = (
+				8F1B3F6B2C7B9A40002389C6 /* Modelos */,
+				8F05E8922C72E7D700F720A3 /* Network */,
+				8FDDDA032C70F8E70082E577 /* Componentes */,
+				8F7CD8432C703CF300BD7410 /* Info.plist */,
+				8F7CD83A2C7038A100BD7410 /* Fonts */,
+				8F7CD8342C7021A400BD7410 /* Extras */,
+				8F7CD82E2C701C7200BD7410 /* Pantallas */,
 				8F7CD8042C7019C200BD7410 /* NorteGoApp.swift */,
-				8F7CD8062C7019C200BD7410 /* ContentView.swift */,
 				8F7CD8082C7019C300BD7410 /* Assets.xcassets */,
 				8F7CD80A2C7019C300BD7410 /* Preview Content */,
 			);
@@ -127,6 +269,91 @@
 			path = NorteGoUITests;
 			sourceTree = "<group>";
 		};
+		8F7CD82E2C701C7200BD7410 /* Pantallas */ = {
+			isa = PBXGroup;
+			children = (
+				8F7CD8372C702A3B00BD7410 /* Principal */,
+				8F7CD82F2C701C7900BD7410 /* Login */,
+			);
+			path = Pantallas;
+			sourceTree = "<group>";
+		};
+		8F7CD82F2C701C7900BD7410 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				8F7CD8302C701C9800BD7410 /* LoginView.swift */,
+				8F7CD8322C701F4200BD7410 /* SplashScreenView.swift */,
+				8F2320842C756D7C0009F15A /* CodigoOtpView.swift */,
+				8F2320862C757C3D0009F15A /* OTPInput.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		8F7CD8342C7021A400BD7410 /* Extras */ = {
+			isa = PBXGroup;
+			children = (
+				8F7CD8352C7021B100BD7410 /* DatosGuardadosKeys.swift */,
+			);
+			path = Extras;
+			sourceTree = "<group>";
+		};
+		8F7CD8372C702A3B00BD7410 /* Principal */ = {
+			isa = PBXGroup;
+			children = (
+				8F625A142C78383C00506617 /* Opciones */,
+				8F625A0A2C780E1000506617 /* Menu */,
+				8F7CD8382C702A4C00BD7410 /* PrincipalView.swift */,
+			);
+			path = Principal;
+			sourceTree = "<group>";
+		};
+		8F7CD83A2C7038A100BD7410 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8F7CD83B2C703C7200BD7410 /* liberation_sans_bold.ttf */,
+				8F7CD83D2C703C7200BD7410 /* medel.ttf */,
+				8F7CD83E2C703C7200BD7410 /* montserratmedium.ttf */,
+				8F7CD83C2C703C7200BD7410 /* montserratregular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		8FA4067D2C76EBA9000CFB32 /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				8FA4067E2C76EBB7000CFB32 /* TimerViewModel.swift */,
+			);
+			path = Timer;
+			sourceTree = "<group>";
+		};
+		8FDDDA032C70F8E70082E577 /* Componentes */ = {
+			isa = PBXGroup;
+			children = (
+				8FA4067D2C76EBA9000CFB32 /* Timer */,
+				8F5C7B0E2C739EE8004E7A62 /* Toast */,
+				8F05E88B2C72746200F720A3 /* PopUp */,
+				8FDDDA042C70F8F40082E577 /* ListaView.swift */,
+				8FDDDA062C710DC10082E577 /* CustomModalView.swift */,
+				8FDDDA082C7147170082E577 /* LoadingSpinnerView.swift */,
+				8FDDDA0A2C7190920082E577 /* CustomModal2ButtonView.swift */,
+				8F05E8902C72A79500F720A3 /* StructReutilizable.swift */,
+			);
+			path = Componentes;
+			sourceTree = "<group>";
+		};
+		98E5B7BAB9D4F4C3B430C9AE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F742E4DD77429DCC2EFF96C5 /* Pods-NorteGo.debug.xcconfig */,
+				B86083807E676F042D776410 /* Pods-NorteGo.release.xcconfig */,
+				C152E892C53E9159B96AD177 /* Pods-NorteGo-NorteGoUITests.debug.xcconfig */,
+				17B484BDCA6531D4D679D1CB /* Pods-NorteGo-NorteGoUITests.release.xcconfig */,
+				C3F2D79AB016D82E0C1EFAAF /* Pods-NorteGoTests.debug.xcconfig */,
+				274E4AAB69448A59BD2A0789 /* Pods-NorteGoTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -134,9 +361,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8F7CD8252C7019C400BD7410 /* Build configuration list for PBXNativeTarget "NorteGo" */;
 			buildPhases = (
+				5DB7E92DB7A67819229FAB6B /* [CP] Check Pods Manifest.lock */,
 				8F7CD7FD2C7019C200BD7410 /* Sources */,
 				8F7CD7FE2C7019C200BD7410 /* Frameworks */,
 				8F7CD7FF2C7019C200BD7410 /* Resources */,
+				45E9564A34B58A48FB73018F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -151,6 +380,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8F7CD8282C7019C400BD7410 /* Build configuration list for PBXNativeTarget "NorteGoTests" */;
 			buildPhases = (
+				BA31027A48DCD28DDF1ED153 /* [CP] Check Pods Manifest.lock */,
 				8F7CD80D2C7019C400BD7410 /* Sources */,
 				8F7CD80E2C7019C400BD7410 /* Frameworks */,
 				8F7CD80F2C7019C400BD7410 /* Resources */,
@@ -169,9 +399,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8F7CD82B2C7019C400BD7410 /* Build configuration list for PBXNativeTarget "NorteGoUITests" */;
 			buildPhases = (
+				6F135DF6114C6971A52C3514 /* [CP] Check Pods Manifest.lock */,
 				8F7CD8172C7019C400BD7410 /* Sources */,
 				8F7CD8182C7019C400BD7410 /* Frameworks */,
 				8F7CD8192C7019C400BD7410 /* Resources */,
+				5F5C44BB3181B8F5B03A14B8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -231,8 +463,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F7CD83F2C703C7200BD7410 /* liberation_sans_bold.ttf in Resources */,
 				8F7CD80C2C7019C300BD7410 /* Preview Assets.xcassets in Resources */,
+				8F7CD8402C703C7200BD7410 /* montserratregular.ttf in Resources */,
 				8F7CD8092C7019C300BD7410 /* Assets.xcassets in Resources */,
+				8F7CD8422C703C7200BD7410 /* montserratmedium.ttf in Resources */,
+				8F7CD8412C703C7200BD7410 /* medel.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,13 +488,139 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		45E9564A34B58A48FB73018F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NorteGo/Pods-NorteGo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NorteGo/Pods-NorteGo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NorteGo/Pods-NorteGo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5DB7E92DB7A67819229FAB6B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NorteGo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5F5C44BB3181B8F5B03A14B8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NorteGo-NorteGoUITests/Pods-NorteGo-NorteGoUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NorteGo-NorteGoUITests/Pods-NorteGo-NorteGoUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NorteGo-NorteGoUITests/Pods-NorteGo-NorteGoUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6F135DF6114C6971A52C3514 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NorteGo-NorteGoUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA31027A48DCD28DDF1ED153 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NorteGoTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8F7CD7FD2C7019C200BD7410 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F7CD8072C7019C200BD7410 /* ContentView.swift in Sources */,
+				8F7CD8392C702A4C00BD7410 /* PrincipalView.swift in Sources */,
+				8F625A0C2C780E2300506617 /* SideMenuView.swift in Sources */,
+				8F7CD8362C7021B100BD7410 /* DatosGuardadosKeys.swift in Sources */,
+				8F1B3F6D2C7B9A53002389C6 /* ModeloSlider.swift in Sources */,
+				8F7CD8312C701C9800BD7410 /* LoginView.swift in Sources */,
+				8F2320872C757C3D0009F15A /* OTPInput.swift in Sources */,
+				8F0831B42C7AB46C00CCC0D7 /* ToolbarPrincipalView.swift in Sources */,
+				8F1B3F712C7BBA3E002389C6 /* ModeloTipoServicioArray.swift in Sources */,
+				8FDDDA0B2C7190920082E577 /* CustomModal2ButtonView.swift in Sources */,
+				8F05E8912C72A79500F720A3 /* StructReutilizable.swift in Sources */,
+				8F05E88D2C72749700F720A3 /* PopImg2BtnView.swift in Sources */,
 				8F7CD8052C7019C200BD7410 /* NorteGoApp.swift in Sources */,
+				8F1B3F6F2C7B9A9B002389C6 /* ModeloTipoServicio.swift in Sources */,
+				8F05E8942C72E83800F720A3 /* ApiNetwork.swift in Sources */,
+				8FDDDA072C710DC10082E577 /* CustomModalView.swift in Sources */,
+				8FDDDA092C7147170082E577 /* LoadingSpinnerView.swift in Sources */,
+				8F7CD8332C701F4200BD7410 /* SplashScreenView.swift in Sources */,
+				8FA4067F2C76EBB7000CFB32 /* TimerViewModel.swift in Sources */,
+				8F2320852C756D7C0009F15A /* CodigoOtpView.swift in Sources */,
+				8F625A0E2C780E7500506617 /* SideMenuHeaderView.swift in Sources */,
+				8F625A132C78123200506617 /* SideMenuOptionModel.swift in Sources */,
+				8F05E88F2C72807F00F720A3 /* PopImg1BtnView.swift in Sources */,
+				8FDDDA052C70F8F40082E577 /* ListaView.swift in Sources */,
+				8F625A182C783B9E00506617 /* DenunciaBasicaView.swift in Sources */,
+				8F625A112C78116100506617 /* SideMenuRowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,7 +694,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -395,7 +757,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -416,6 +778,7 @@
 		};
 		8F7CD8262C7019C400BD7410 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F742E4DD77429DCC2EFF96C5 /* Pods-NorteGo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -424,12 +787,14 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NorteGo/Preview Content\"";
 				DEVELOPMENT_TEAM = 42VSDQG6FV;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NorteGo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -437,14 +802,19 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tatanstudios.NorteGo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		8F7CD8272C7019C400BD7410 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B86083807E676F042D776410 /* Pods-NorteGo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -453,12 +823,14 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NorteGo/Preview Content\"";
 				DEVELOPMENT_TEAM = 42VSDQG6FV;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NorteGo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -466,14 +838,19 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tatanstudios.NorteGo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 		8F7CD8292C7019C400BD7410 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3F2D79AB016D82E0C1EFAAF /* Pods-NorteGoTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -494,6 +871,7 @@
 		};
 		8F7CD82A2C7019C400BD7410 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 274E4AAB69448A59BD2A0789 /* Pods-NorteGoTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -514,6 +892,7 @@
 		};
 		8F7CD82C2C7019C400BD7410 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C152E892C53E9159B96AD177 /* Pods-NorteGo-NorteGoUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -532,6 +911,7 @@
 		};
 		8F7CD82D2C7019C400BD7410 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17B484BDCA6531D4D679D1CB /* Pods-NorteGo-NorteGoUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

@@ -8,8 +8,26 @@
 import SwiftUI
 
 struct DenunciaBasicaView: View {
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    
+        VStack {
+                   Text("Detalle")
+               }
+               .navigationTitle("Detalle")
+               .navigationBarBackButtonHidden(true)
+               .toolbar {
+                   ToolbarItem(placement: .navigationBarLeading) {
+                       Button(action: {
+                           presentationMode.wrappedValue.dismiss() // Regresa a la pantalla anterior
+                       }) {
+                           HStack {
+                               Image(systemName: "arrow.left") // Ícono personalizado
+                               Text("Personalizado") // Texto personalizado
+                           }
+                       }
+                   }
+               }
     }
 }
 

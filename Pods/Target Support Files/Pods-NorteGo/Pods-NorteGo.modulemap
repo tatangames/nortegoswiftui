@@ -1,0 +1,6 @@
+framework module Pods_NorteGo {
+  umbrella header "Pods-NorteGo-umbrella.h"
+
+  export *
+  module * { export * }
+}

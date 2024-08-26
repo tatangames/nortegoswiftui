@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+class ModeloTipoServicioArray{
+    
+    var id: Int
+    var nombre: String
+    var lista: [ModeloTipoServicio]
+    
+    init(id: Int, nombre: String, lista: [ModeloTipoServicio]) {
+        self.id = id
+        self.nombre = nombre
+        self.lista = lista
+    }
+}

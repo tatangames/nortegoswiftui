@@ -1,0 +1,6 @@
+framework module SwiftUI_Shimmer {
+  umbrella header "SwiftUI-Shimmer-umbrella.h"
+
+  export *
+  module * { export * }
+}

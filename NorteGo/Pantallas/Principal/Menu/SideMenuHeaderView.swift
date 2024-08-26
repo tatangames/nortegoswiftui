@@ -8,8 +8,18 @@
 import SwiftUI
 
 struct SideMenuHeaderView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    var body: some View {        
+        VStack {
+            
+            Text("NorteGo")
+                .font(.custom("LiberationSans-Bold", size: 28))
+                .foregroundColor(.white)
+            
+        }
+        .frame(maxWidth: .infinity, maxHeight: 80) // Ajustar el tamaño del encabezado
+        .background(Color("cazulv1"))
+        .foregroundColor(.blue) // Asegura que el color del texto sea blanco
+        .multilineTextAlignment(.center) // Alineación del texto en el centro
     }
 }
 

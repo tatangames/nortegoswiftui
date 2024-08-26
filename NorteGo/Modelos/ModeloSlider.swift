@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+class ModeloSlider: Identifiable{
+    var id: Int
+    var imagen: String
+    
+    init(id: Int, imagen: String) {
+        self.id = id
+        self.imagen = imagen
+    }
+}
