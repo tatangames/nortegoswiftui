@@ -33,13 +33,6 @@ struct SplashScreenView: View {
             if idToken.isEmpty {
                 LoginView()
             } else {
-                // pantalla principal
-                /*let defaultImages = [
-                        SliderImage(imageName: "imagen1"),
-                        SliderImage(imageName: "imagen2"),
-                        SliderImage(imageName: "imagen3")
-                    ]*/
-                    
                 PrincipalView()
             }
         }

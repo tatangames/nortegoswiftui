@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SideMenuView: View {
+    
     var edges: UIEdgeInsets? {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             if let window = windowScene.windows.first {
@@ -18,8 +19,11 @@ struct SideMenuView: View {
     }
     
     @State var show = true
-    @State private var selectedMenu: SideMenuOptionModel = .servicios
+    @State private var selectedMenu: SideMenuOptionModel? // = .servicios
     @Binding var x: CGFloat
+    @Binding var popCerrarSesion: Bool
+    
+    
     var body: some View {
         
         HStack {
@@ -33,17 +37,30 @@ struct SideMenuView: View {
                     
                     ScrollView{
                         ForEach(SideMenuOptionModel.allCases) { menu in
-                            NavigationLink(destination: destinationView(for: menu)) {
-                                SideMenuRowView(
-                                    title: menu.title,
-                                    imagen: menu.systemImageName,
-                                    isSelected: selectedMenu == menu
-                                )
+                            if menu == .cerrarsesion {
+                                Button(action: {
+                                    popCerrarSesion = true
+                                    closeMenu()
+                                }) {
+                                    SideMenuRowView(
+                                        title: menu.title,
+                                        imagen: menu.systemImageName,
+                                        isSelected: selectedMenu == menu
+                                    )
+                                }
+                            } else {
+                                NavigationLink(destination: destinationView(for: menu)) {
+                                    SideMenuRowView(
+                                        title: menu.title,
+                                        imagen: menu.systemImageName,
+                                        isSelected: selectedMenu == menu
+                                    )
+                                }
+                                .simultaneousGesture(TapGesture().onEnded {
+                                    selectedMenu = menu
+                                    closeMenu()
+                                })
                             }
-                            .simultaneousGesture(TapGesture().onEnded {
-                                selectedMenu = menu
-                                closeMenu()
-                            })
                         }
                         .padding(.horizontal, 10)
                         
@@ -75,19 +92,18 @@ struct SideMenuView: View {
     
     private func closeMenu() {
         withAnimation {
-            x = -UIScreen.main.bounds.width + 90 // Ajusta según tu lógica
+            x = -UIScreen.main.bounds.width + 90
         }
     }
     
     @ViewBuilder
     func destinationView(for menu: SideMenuOptionModel) -> some View {
+        
         switch menu {
-        case .servicios:
-            DenunciaBasicaView()
         case .solicitudes:
-            DenunciaBasicaView()
-        case .cerrarsesion:
-            DenunciaBasicaView()
+            ListadoSolicitudesView()
+        default:
+            EmptyView()
         }
-    }    
+    }
 }

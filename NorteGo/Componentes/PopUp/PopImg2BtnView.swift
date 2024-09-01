@@ -41,7 +41,7 @@ struct PopImg2BtnView: View {
                     .font(.body)
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+                   // .padding(.horizontal)
                 
                 HStack {
                     // Botón de Cancelar
@@ -74,7 +74,7 @@ struct PopImg2BtnView: View {
                             .cornerRadius(8)
                     }.buttonStyle(NoOpacityChangeButtonStyle())
                 }
-                .padding(.horizontal)
+               // .padding(.horizontal)
             }
             .padding()
             .background(Color.white)
@@ -87,5 +87,5 @@ struct PopImg2BtnView: View {
 
 
 #Preview {
-    PopImg2BtnView(isActive: .constant(true), imagen: .constant("infocolor"), descripcion: .constant("Verificar numero"), txtCancelar: .constant("Cancelar"), txtAceptar: .constant("Aceptar"), cancelAction: {}, acceptAction: {})
+    PopImg2BtnView(isActive: .constant(true), imagen: .constant("infocolor"), descripcion: .constant("Verificar numero ejemplo de texto que se muestra en preview"), txtCancelar: .constant("Cancelar"), txtAceptar: .constant("Aceptar"), cancelAction: {}, acceptAction: {})
 }

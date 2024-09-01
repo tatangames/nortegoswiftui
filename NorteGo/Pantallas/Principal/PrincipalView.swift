@@ -17,36 +17,46 @@ struct PrincipalView: View {
     
     @State var width = UIScreen.main.bounds.width - 90
     @State var x = -UIScreen.main.bounds.width + 90
-    @State private var pantallaCargada = false
-    @State private var openLoadingSpinner = true
-    @State private var showToastBool = false
+    @State private var pantallaCargada:Bool = false
+    @State private var openLoadingSpinner:Bool = true
+    @State private var showToastBool:Bool = false
     @State private var popNumeroBloqueado: Bool = false
+    @State private var popCerrarSesion: Bool = false
     @State var itemsSlider: [ModeloSlider] = []
     @State var itemsTipoServicioArray: [ModeloTipoServicioArray] = []
     @State var itemsTipoServicio: [ModeloTipoServicio] = []
-    @State private var boolSalir = false
+    @State private var datosCargados:Bool = false
+    @State var popNuevoServicio:Bool = false
+    @State private var popNuevaActualizacion: Bool = false
+    
     
     @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
     let disposeBag = DisposeBag()
+    let appBuild: String = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
     
     // Variable para almacenar el contenido del toast
     @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
     
-      
+    @State var popVista:Bool = false
+    @State var vistaSeleccionada: AnyView? = nil
+    
     var body: some View {
         
-        NavigationView {
+        NavigationStack {
             ZStack(alignment: Alignment(horizontal: .leading, vertical: .center)) {
                 
                 if(pantallaCargada){
                     VStack(spacing: 0) {
                         
-                        if !boolSalir {
-                            ToolbarPrincipalView(x: $x)
-                            ContenidoServicios(itemsSlider: itemsSlider, itemServicioArray: itemsTipoServicioArray)
-                        }
+                        
+                        ToolbarPrincipalView(x: $x)
+                        ContenidoServicios(itemsSlider: itemsSlider,
+                                           itemServicioArray: itemsTipoServicioArray,
+                                           popNuevoServicioBindind: $popNuevoServicio,
+                                           vistaSeleccionada: $vistaSeleccionada)
+                        
                     }
-                    SideMenuView(x: $x)
+                    SideMenuView(x: $x, popCerrarSesion: $popCerrarSesion)
                         .shadow(color: Color.black.opacity(x != 0 ? 0.1 : 0), radius: 5,
                                 x: 5, y: 0)
                         .offset(x: x)
@@ -61,6 +71,7 @@ struct PrincipalView: View {
                     ContenedorShimmer().shimmering()
                 }
                 
+               
                 
                 if openLoadingSpinner {
                     LoadingSpinnerView()
@@ -71,14 +82,46 @@ struct PrincipalView: View {
                 // Pop-up numero bloqueado
                 if popNumeroBloqueado {
                     PopImg1BtnView(isActive: $popNumeroBloqueado, imagen: .constant("infocolor"), bLlevaTitulo: .constant(true), titulo: .constant("Bloqueado"), descripcion: .constant("Número de teléfono bloqueado, contactar a la Administración"), txtAceptar: .constant("Aceptar"), acceptAction: {
-                       
-                        idToken = ""
-                        salirAlInicio()
+                        
+                        salirSplashView()
                     })
-                        .zIndex(1)
+                    .zIndex(1)
+                }
+                
+                // Pop-up numero bloqueado
+                if popNuevaActualizacion {
+                    PopImg2BtnView(isActive: $popNuevaActualizacion, imagen: .constant("infocolor"), descripcion: .constant("Hay una nueva versión disponible. ¿Desea actualizar ahora?"), txtCancelar: .constant("No"), txtAceptar: .constant("Actualizar"), cancelAction: {}, acceptAction: {
+                        if let url = URL(string: apiURLAppleStore) {
+                            UIApplication.shared.open(url)
+                        }
+                    }).zIndex(1)
+                }
+                
+                if popNuevoServicio {
+                    PopImg2BtnView(isActive: $popNuevoServicio, imagen: .constant("infocolor"), descripcion: .constant("Por favor, actualiza la aplicación para acceder a este servicio"), txtCancelar: .constant("No"), txtAceptar: .constant("Actualizar"), cancelAction: {popNuevoServicio = false}, acceptAction: {
+                        if let url = URL(string: apiURLAppleStore) {
+                            UIApplication.shared.open(url)
+                        }
+                    }).zIndex(1)
+                }
+                
+                if popCerrarSesion {
+                    PopImg2BtnView(isActive: $popCerrarSesion, imagen: .constant("infocolor"), descripcion: .constant("Cerrar Sesión"), txtCancelar: .constant("No"), txtAceptar: .constant("Si"), cancelAction: {popCerrarSesion = false}, acceptAction: {
+                        
+                        salirSplashView()
+                            
+                    }).zIndex(1)
                 }
                 
             }
+            
+            .navigationDestination(isPresented: Binding(
+                get: { vistaSeleccionada != nil },
+                set: { _ in vistaSeleccionada = nil }
+            )) {
+                vistaSeleccionada
+            }
+            
             .gesture(DragGesture().onChanged({ (value) in
                 
                 /*withAnimation{
@@ -102,23 +145,37 @@ struct PrincipalView: View {
                  }
                  }*/
             }))
-            .onAppear{
+            /* .onAppear{
+             serverPrincipal()
+             }*/
+        }
+        
+        .onAppear {
+            if !datosCargados {
                 serverPrincipal()
+                datosCargados = true
             }
         }
-        .fullScreenCover(isPresented: $boolSalir) {
-            return SplashScreenView()
+        .toast(isPresenting: $showToastBool, duration: 3, tapToDismiss: false) {
+            customToast
         }
-    }
-    
-    func salirAlInicio(){
-        boolSalir = true
     }
     
     
     //*** FUNCIONES ****
     
-    
+    func salirSplashView(){
+        
+        idToken = ""
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            if let window = windowScene.windows.first {
+                window.rootViewController = UIHostingController(rootView: SplashScreenView())
+                window.makeKeyAndVisible()
+            }
+        }
+    }
+  
     func serverPrincipal(){
         
         openLoadingSpinner = true
@@ -141,7 +198,6 @@ struct PrincipalView: View {
                         
                         let json = JSON(data)
                         openLoadingSpinner = false
-                      
                         
                         if let successValue = json["success"].int {
                             
@@ -151,7 +207,14 @@ struct PrincipalView: View {
                                 popNumeroBloqueado = true
                             }
                             else if (successValue == 2){
-                                let _codeiphone = json["success"].int ?? 0
+                                let _codeiphone = json["codeiphone"].int ?? 0
+                                
+                                // verificar si hay actualizacion
+                                if !appBuild.isEmpty {
+                                    if _codeiphone != Int(appBuild) {
+                                        popNuevaActualizacion = true
+                                    }
+                                }
                                                                 
                                 json["slider"].array?.forEach({ (dataArray) in
                                     
@@ -247,6 +310,8 @@ struct ContenidoServicios:View {
     
     @State var itemsSlider: [ModeloSlider] = []
     @State var itemServicioArray: [ModeloTipoServicioArray] = []
+    @Binding var popNuevoServicioBindind: Bool
+    @Binding var vistaSeleccionada: AnyView?
     
     let columns = [
         GridItem(.flexible()),
@@ -270,8 +335,9 @@ struct ContenidoServicios:View {
                                 
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(servicioArray.lista, id: \.id) { servicio in
+                        
                         CardView(image: servicio.imagen, title: servicio.nombre) {
-                            print("Se tocó el servicio: \(servicio.nombre)")
+                            redireccionamiento(_tiposervicio: servicio.tiposervicio, _id: servicio.id, _titulo: servicio.nombre)
                         }
                     }
                 }
@@ -286,43 +352,60 @@ struct ContenidoServicios:View {
                 }
             }
             .listRowSeparator(.hidden)
+            
+            
         }
         .listStyle(PlainListStyle())
+        
     }
+    
+    // ** FUNCIONES **
+    
+    func redireccionamiento(_tiposervicio: Int, _id: Int, _titulo: String){
+        
+        // ID SERVICIOS DISPONIBLES, SINO MOSTRAR QUE ESTE SERVICIO NUEVO NECESITA ACTUALIZACION
+        let supportedTypes: [Int] = [1,2,3,4]
+        
+        if supportedTypes.contains(_tiposervicio) {
+            if _tiposervicio == 1 {
+                // SERVICIO BASICO
+                // .environmentObject(locationManager)
+                vistaSeleccionada = AnyView(DenunciaBasicaView(idServicio: _id, tituloVista: _titulo))
+            }
+            else if _tiposervicio == 2 {
+                // DENUNCIA DE TALA ARBOL
+                vistaSeleccionada = AnyView(SolicitudTalaArbolView(idServicio: _id, tituloVista: _titulo))
+            }
+            else if _tiposervicio == 3 {
+                // REDIRECCIONAR A DENUNCIA
+                openWhatsApp(with: "50375825072")
+            }
+            else if _tiposervicio == 4 {
+                // CATASTRO
+                vistaSeleccionada = AnyView(SolvenciaCatastroView(tituloVista: _titulo))
+            }
+        }else{
+            // nuevo servicio, se necesita actualizacion
+            popNuevoServicioBindind = true
+        }
+    }
+    
+    
+    func openWhatsApp(with phoneNumber: String) {
+            let urlWhatsApp = "https://wa.me/\(phoneNumber)"
+            
+            if let urlString = urlWhatsApp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+               let url = URL(string: urlString) {
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else {
+                    print("No se puede abrir WhatsApp")
+                }
+            }
+        }
+    
 }
 
-// ESTRUCTURA DE CADA OPCION CARDVIEW
-struct CardView: View {
-    var image: String
-    var title: String
-    var onTap: () -> Void
-    var body: some View {
-        VStack {
-            
-            WebImage(url: URL(string: baseUrlImagen + image))
-                .resizable()
-                .indicator(.activity)
-                .scaledToFit()
-                .frame(height: 100)
-                .padding(.top, 10)
-            
-            Text(title)
-                .font(.headline)
-                .padding(.horizontal, 10)
-                .padding(.bottom, 10)
-            
-            
-        }
-        .frame(maxWidth: .infinity)
-        .background(Color.white)
-        .cornerRadius(10)
-        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 5)
-        .padding(.horizontal, 10)
-        .onTapGesture {
-            onTap()
-        }
-    }
-}
 
 
 
@@ -392,6 +475,5 @@ struct ContenedorShimmer: View {
 #Preview {
     return PrincipalView()
 }*/
-
 
 

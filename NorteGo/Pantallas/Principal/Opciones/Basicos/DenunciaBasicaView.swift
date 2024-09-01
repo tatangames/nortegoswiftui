@@ -6,31 +6,390 @@
 //
 
 import SwiftUI
+import PhotosUI
+import SwiftyJSON
+import Alamofire
+import RxSwift
+import AlertToast
 
 struct DenunciaBasicaView: View {
     @Environment(\.presentationMode) var presentationMode
+    
+    @State var idServicio: Int = 0
+    @State var tituloVista: String = ""
+    
+    @State private var showToastBool:Bool = false
+    @State private var selectedImage: UIImage?
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var isPickerPresented:Bool = false
+    @State private var showSettingsAlert:Bool = false
+    @State private var isCameraPresented:Bool = false
+    @State private var sheetCamaraGaleria:Bool = false
+    @State private var notaOpcional: String = ""
+    @State private var actualizaraImagen:Bool = false
+    @State private var openLoadingSpinner:Bool = false
+    @StateObject private var locationManager = LocationManager()
+    @State private var latitudFinal: String = ""
+    @State private var longitudFinal: String = ""
+    @State private var popRangoDenunciaPendiente: Bool = false
+    @State private var popDatosEnviados: Bool = false
+    
+    // cuando una solicitud esta pendiente en un rango segun server
+    @State private var tituloRango: String = ""
+    @State private var mensajeRango: String = ""
+    
+    @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
+    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente: String = ""
+    
+    // Variable para almacenar el contenido del toast
+    @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
+    
+    
     var body: some View {
         
-        VStack {
-            Text("denuncia basica")
-        }
-        .navigationTitle("Detalle")
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss() // Regresa a la pantalla anterior
-                }) {
+        ZStack {
+            ScrollView {
+                VStack(spacing: 15) {
+       
+                    Button(action: {
+                        // Abrir bottom sheet
+                        sheetCamaraGaleria.toggle()
+                    }) {
+                        if let selectedImage = selectedImage {
+                            Image(uiImage: selectedImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 200, height: 200)
+                        } else {
+                            Image("camarafoto")
+                                .resizable()
+                                .frame(width: 200, height: 200)
+                        }
+                    }
+                    .padding(.top, 20)
+                                        
+                    // Alinea el texto a la izquierda
                     HStack {
-                        Image(systemName: "arrow.left") // Ícono personalizado
-                        Text("Atras") // Texto personalizado
+                        Text("Nota (Opcional)")
+                            .bold()
+                        Spacer()
+                    }
+                    .padding(.top, 20)
+                    
+                    VStack {
+                        TextField("Nota", text: $notaOpcional)
+                            .onChange(of: notaOpcional) { newValue in
+                                if newValue.count > 1000 {
+                                    notaOpcional = String(newValue.prefix(1000))
+                                }
+                            }
+                            .padding(.bottom, 0) // Añade espacio entre el texto y la línea
+                        
+                        // Línea subrayada
+                        Rectangle()
+                            .frame(height: 1) // Altura de la línea
+                            .foregroundColor(.gray) // Color de la línea
+                    }
+                                        
+                    Button(action: { // btn verificar
+                        serverSubirInformacion()
+                    }) {
+                        Text("ENVIAR")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color("cazulv1"))
+                            .cornerRadius(8)
+                    }
+                    .padding(.top, 50)
+                    .opacity(1.0)
+                    .buttonStyle(NoOpacityChangeButtonStyle())
+                    
+                    Spacer()
+                }
+                                
+                .padding()
+                .photosPicker(isPresented: $isPickerPresented, selection: $selectedItem, matching: .images)
+                
+                .onChange(of: selectedItem) { newItem in
+                    if let newItem = newItem {
+                        newItem.loadTransferable(type: Data.self) { result in
+                            switch result {
+                            case .success(let data):
+                                if let data = data, let image = UIImage(data: data) {
+                                    selectedImage = image
+                                    actualizaraImagen = true
+                                }
+                            case .failure(let error):
+                                print("Error loading image: \(error.localizedDescription)")
+                            }
+                        }
                     }
                 }
+                
+                .navigationTitle(tituloVista)
+                .navigationBarBackButtonHidden(true)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss() // Regresa a la pantalla anterior
+                        }) {
+                            HStack {
+                                Image(systemName: "arrow.left") // Ícono personalizado
+                                Text("Atras") // Texto personalizado
+                            }
+                        }
+                    }
+                }
+                .onChange(of: locationManager.latitude) { newLatitude in
+                    latitudFinal = String(format: "%.6f", newLatitude)
+                }
+                .onChange(of: locationManager.longitude) { newLongitude in
+                    longitudFinal = String(format: "%.6f", newLongitude)
+                }
             }
+            .onTapGesture {
+                hideKeyboard()
+            }
+            
+            
+            if openLoadingSpinner {
+                LoadingSpinnerView()
+                    .transition(.opacity) // Transición de opacidad
+                    .zIndex(10)
+            }
+            
+            // Pop-up numero bloqueado
+            if popRangoDenunciaPendiente {
+                PopImg1BtnView(isActive: $popRangoDenunciaPendiente, imagen: .constant("infocolor"), bLlevaTitulo: .constant(true), titulo: $tituloRango, descripcion: $mensajeRango, txtAceptar: .constant("Aceptar"), acceptAction: {
+                                 
+                })
+                    .zIndex(1)
+            }
+            
+            if popDatosEnviados {
+                PopImg1BtnView(isActive: $popDatosEnviados, imagen: .constant("infocolor"), bLlevaTitulo: .constant(true), titulo: .constant("Enviado"), descripcion: .constant("Puede verificar la solicitud en el Menu, opción Solicitudes"), txtAceptar: .constant("Aceptar"), acceptAction: {
+                    
+                })
+                .zIndex(1)
+            }
+        }
+        .sheet(isPresented: $sheetCamaraGaleria) {
+            BottomSheetCamaraGaleriaView(onOptionSelected: { option in
+                              
+                if option == 1{
+                    checkPhotoLibraryPermission()
+                }else{
+                    checkCameraPermission()
+                }
+                
+                // actualizar localizacion aqui
+                locationManager.requestLocation()
+                sheetCamaraGaleria = false // Cierra el bottom sheet
+            })
+        }
+        .sheet(isPresented: $isCameraPresented) {
+            ImagePicker(sourceType: .camera, selectedImage: $selectedImage)
+                .onChange(of: selectedImage) { newImage in
+                    if newImage != nil {
+                        actualizaraImagen = true
+                    }
+                }
+        }
+        .alert(isPresented: $showSettingsAlert) {
+            Alert(
+                title: Text("Acceso a Galería y Camara Denegado"),
+                message: Text("Por favor habilitar el permiso de Galería y Camara en Ajustes."),
+                primaryButton: .default(Text("Ajustes")) {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                },
+                secondaryButton: .default(Text("Cancelar")) {
+                   
+                }
+            )
+        }
+        .toast(isPresenting: $showToastBool, duration: 3, tapToDismiss: false) {
+            customToast
+        }
+        
+       
+    } // end-body
+    
+    
+ 
+    func serverSubirInformacion() {
+        
+        
+        guard let image = selectedImage else {
+            showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
+            return
+        }
+                
+        if actualizaraImagen {
+            
+            openLoadingSpinner = true
+
+            let encodeURL = apiEnviarDatosDenuncia
+            
+            let parameters: [String: Any] = [
+                "iduser": idCliente,
+                "idservicio": idServicio,
+                "nota": notaOpcional,
+                "latitud": latitudFinal,
+                "longitud": longitudFinal
+            ]
+                   
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(idToken)"
+            ]
+         
+            AF.upload(multipartFormData: { multipartFormData in
+                if let imageData = image.jpegData(compressionQuality: 0.8) {
+                    multipartFormData.append(imageData, withName: "imagen", fileName: "imagen.jpg", mimeType: "image/jpeg")
+                }
+                for (key, value) in parameters {
+                    if let data = "\(value)".data(using: .utf8) {
+                        multipartFormData.append(data, withName: key)
+                    }
+                }
+            }, to: encodeURL, method: .post, headers: headers)
+            .responseData { response in
+                switch response.result {
+                case .success(let data):
+                  
+                    openLoadingSpinner = false
+                    
+                    let json = JSON(data)
+                    if let successValue = json["success"].int {
+                        if successValue == 1 {
+                            // HAY SOLICITUD ACTIVA, Y ESTA DENTRO DEL RANGO 20 METROS
+                            let _titulo = json["titulo"].string ?? ""
+                            let _mensaje = json["mensaje"].string ?? ""
+                            
+                            tituloRango = _titulo
+                            mensajeRango = _mensaje
+                            
+                            popRangoDenunciaPendiente = true
+                            
+                        } else if successValue == 2 {
+                           // DATOS GUARDADOS
+                            showCustomToast(with: "Información Enviada", tipoColor: 2)
+                            selectedImage = nil
+                            actualizaraImagen = false
+                            notaOpcional = ""                            
+                            popDatosEnviados = true
+                            
+                        } else {
+                            showCustomToast(with: "Error", tipoColor: 1)
+                        }
+                    } else {
+                        showCustomToast(with: "Error", tipoColor: 1)
+                    }
+                case .failure(_):
+                    openLoadingSpinner = false
+                    showCustomToast(with: "Error", tipoColor: 1)
+                }
+            }
+        } else {
+            showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
+        }
+    }
+    
+    // Función para configurar y mostrar el toast
+    func showCustomToast(with mensaje: String, tipoColor: Int) {
+        
+        let titleColor: Color
+        
+        if tipoColor == 1 {
+            titleColor = Color("ColorAzulToast")
+        } else {
+            titleColor = Color("cverde")
+        }
+        
+        customToast = AlertToast(
+               displayMode: .banner(.pop),
+               type: .regular,
+               title: mensaje,
+               subTitle: nil,
+               style: .style(
+                   backgroundColor: titleColor,
+                   titleColor: Color.white,
+                   subTitleColor: Color.blue,
+                   titleFont: .headline,
+                   subTitleFont: nil
+               )
+           )
+           showToastBool = true
+    }
+     
+    
+    // verificar permiso para galeria
+    func checkPhotoLibraryPermission() {
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .authorized:
+            //print("Permiso autorizado")
+            isPickerPresented = true
+        case .denied, .restricted:
+            //print("Permiso denegado o restrictivo")
+            showSettingsAlert = true
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization { newStatus in
+                if newStatus == .authorized {
+                    //print("Acceso autorizado despues del request")
+                    isPickerPresented = true
+                } else {
+                    //print("Accesso denegado despues del request")
+                    showSettingsAlert = true
+                }
+            }
+        case .limited:
+            showSettingsAlert = true
+        @unknown default:
+           // print("Estado desconocido")
+            showSettingsAlert = true
+        }
+    }
+    
+    func checkCameraPermission() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let status = AVCaptureDevice.authorizationStatus(for: .video)
+            switch status {
+            case .authorized:
+                isCameraPresented = true
+            case .denied, .restricted:
+                showSettingsAlert = true
+            case .notDetermined:
+                AVCaptureDevice.requestAccess(for: .video) { granted in
+                    if granted {
+                        isCameraPresented = true
+                    } else {
+                        showSettingsAlert = true
+                    }
+                }
+            @unknown default:
+                showSettingsAlert = true
+            }
+        } else {
+            print("Camara no disponible")
         }
     }
 }
 
-#Preview {
-    DenunciaBasicaView()
+
+
+
+
+
+
+
+
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        DenunciaBasicaView().environmentObject(LocationManager())
+    }
 }

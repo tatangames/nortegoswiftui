@@ -8,14 +8,12 @@
 import Foundation
 
 enum SideMenuOptionModel: Int, CaseIterable {
-    case servicios
     case solicitudes
     case cerrarsesion
     
     var title: String {
         switch self {
-        case .servicios:
-            return "Servicios"
+      
         case .solicitudes:
             return "Solicitudes"
         case .cerrarsesion:
@@ -25,10 +23,8 @@ enum SideMenuOptionModel: Int, CaseIterable {
     
     var systemImageName: String {
         switch self {
-        case .servicios:
-            return "list.bullet.rectangle"
         case .solicitudes:
-            return "info.circle"
+            return "list.bullet.rectangle"
         case .cerrarsesion:
             return "rectangle.portrait.and.arrow.right"
         }
