@@ -55,7 +55,7 @@ struct CodigoOtpView: View {
                         .frame(width: 100, height: 100)
                         .padding(.top, 20)
                     
-                    Text("Ingresa el código de 6 dígitos que enviamos a tu número de teléfono")
+                    Text("Ingresa el código de 6 dígitos que enviamos a tu número de teléfono \(localTelefono)")
                         .foregroundColor(Color.black)
                         .font(.custom("Montserrat-Medium", size: 15))
                         .multilineTextAlignment(.center)

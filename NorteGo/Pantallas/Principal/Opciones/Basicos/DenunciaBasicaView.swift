@@ -37,6 +37,7 @@ struct DenunciaBasicaView: View {
     // cuando una solicitud esta pendiente en un rango segun server
     @State private var tituloRango: String = ""
     @State private var mensajeRango: String = ""
+    @State var descripcion:String = ""
     
     @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
     @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente: String = ""
@@ -50,7 +51,23 @@ struct DenunciaBasicaView: View {
         ZStack {
             ScrollView {
                 VStack(spacing: 15) {
-       
+                           
+                    if !descripcion.isEmpty {
+                        HStack {
+                            Text(descripcion)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Spacer()
+                        }
+                        .padding(.top, 30)
+                        .padding(.horizontal, 0)
+                    }
+                    
+                    HStack {
+                        Text("Seleccionar Imagen")
+                            .bold()
+                    }
+                    .padding(.top, 35)
+                    
                     Button(action: {
                         // Abrir bottom sheet
                         sheetCamaraGaleria.toggle()
@@ -100,7 +117,7 @@ struct DenunciaBasicaView: View {
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(Color("cazulv1"))
-                            .cornerRadius(8)
+                            .cornerRadius(32)
                     }
                     .padding(.top, 50)
                     .opacity(1.0)
@@ -207,22 +224,19 @@ struct DenunciaBasicaView: View {
                     }
                 },
                 secondaryButton: .default(Text("Cancelar")) {
-                   
                 }
             )
         }
         .toast(isPresenting: $showToastBool, duration: 3, tapToDismiss: false) {
             customToast
         }
-        
        
     } // end-body
     
     
  
     func serverSubirInformacion() {
-        
-        
+                
         guard let image = selectedImage else {
             showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
             return
@@ -374,18 +388,10 @@ struct DenunciaBasicaView: View {
                 showSettingsAlert = true
             }
         } else {
-            print("Camara no disponible")
+            print("Cámara no disponible")
         }
     }
 }
-
-
-
-
-
-
-
-
 
 
 struct ContentView_Previews: PreviewProvider {

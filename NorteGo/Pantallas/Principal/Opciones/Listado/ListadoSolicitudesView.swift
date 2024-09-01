@@ -13,14 +13,13 @@ import AlertToast
 import SDWebImageSwiftUI
 
 struct ListadoSolicitudesView: View {
-    
-    @State private var openLoadingSpinner = true
-    @State private var showToastBool = false
+    @Environment(\.presentationMode) var presentationMode
+    @State private var openLoadingSpinner:Bool = true
+    @State private var showToastBool:Bool = false
     @State var itemsListado: [ModeloListadoSolicitudes] = []
     @State private var popOcultarLista: Bool = false
     @State private var pantallaCargada: Bool = false
     @State private var boolNoHayDatos: Bool = false
-    
     @State private var popPreguntarOcultar: Bool = false
     @State private var idFilaTipoSolicitud: Int = 0
     @State private var idFilaSolicitud: Int = 0
@@ -32,7 +31,7 @@ struct ListadoSolicitudesView: View {
     // Variable para almacenar el contenido del toast
     @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
     
-    @Environment(\.presentationMode) var presentationMode
+   
     var body: some View {
         VStack {
             
@@ -73,32 +72,30 @@ struct ListadoSolicitudesView: View {
                                             abrirPopOcultar(_idfilaSolicitud: _servicio.id, _idfilaTipoSolicitud: _servicio.tipo)
                                         })
                                     }
+                                    
                                 }
                                 .listRowSeparator(.hidden)
                             }
                             .listStyle(PlainListStyle())
+                            .refreshable {
+                                // RECARGAR AL HACER SCROLL
+                                serverListado()
+                            }
                         }else{
-                            
                             // mostrar que no hay datos
                             if boolNoHayDatos {
                                 CardViewNoHayDatos()
                             }
-                            
                         }
                     }
                     .onAppear{
                         serverListado()
                     }
-            
-             
-                
                 if openLoadingSpinner {
                     LoadingSpinnerView()
                         .transition(.opacity) // Transición de opacidad
                         .zIndex(10)
                 }
-                
-               
                 
                 // Pop-up numero bloqueado
                 if popOcultarLista {
@@ -293,8 +290,7 @@ struct ListadoSolicitudesView: View {
         })
         .disposed(by: disposeBag)
     }
-    
-    
+        
     
     // Función para configurar y mostrar el toast
     func showCustomToast(with mensaje: String) {
@@ -332,7 +328,6 @@ struct CardViewDenunciaBasica: View {
             if !nota.isEmpty {
                 BloqueFilaSolicitud(nombretipo: "Nota: ", texto: nota)
             }
-            
         }
         .padding(.horizontal, 10)
         .padding(.top, 20)
@@ -377,8 +372,6 @@ struct CardViewSolicitudTalaArbol: View {
                 BloqueFilaSolicitud(nombretipo: "Escritura: ", texto: "No")
             }
             
-            
-            
             if !nota.isEmpty {
                 BloqueFilaSolicitud(nombretipo: "Nota: ", texto: nota)
             }
@@ -389,7 +382,6 @@ struct CardViewSolicitudTalaArbol: View {
                            .scaledToFit()
                            .frame(height: 200)
                            .padding(.top, 10)
-            
         }
         .padding(.horizontal, 10)
         .padding(.top, 20)
@@ -417,7 +409,6 @@ struct CardViewDenunciaTalaArbol: View {
     var onTap: () -> Void
     var body: some View {
         VStack {
-                     
             
             BloqueFilaSolicitud(nombretipo: "Tipo: ", texto: nombretipo)
             BloqueFilaSolicitud(nombretipo: "Fecha: ", texto: fecha)
@@ -509,7 +500,6 @@ struct CardViewNoHayDatos: View {
             Text("No hay Solicitudes")
                 .font(.custom("LiberationSans-Bold", size: 17))
                 .padding(.top, 20)
-            
         }
         .padding()
         .background(Color.white)

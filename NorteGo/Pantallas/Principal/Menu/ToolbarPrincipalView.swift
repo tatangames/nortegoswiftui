@@ -21,6 +21,7 @@ struct ToolbarPrincipalView: View {
                         .font(.system(size: 24))
                         .foregroundColor(Color.blue)
                 }
+                
                 Spacer(minLength: 0)
                 
                 Text("Servicios")
@@ -28,14 +29,19 @@ struct ToolbarPrincipalView: View {
                     .foregroundColor(.black)
                 
                 Spacer(minLength: 0)
+                
+                // Espacio fijo igual al tamaño del botón para centrar el texto
+                Button(action: {}) {
+                    Image(systemName: "line.horizontal.3")
+                        .font(.system(size: 24))
+                        .foregroundColor(.clear)
+                }
+                .disabled(true)
             }
             .padding()
             .background(Color.white)
             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
-            
         }
-           
-      
         .contentShape(Rectangle())
         .background(Color.white)
     }

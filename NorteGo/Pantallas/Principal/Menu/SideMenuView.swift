@@ -72,7 +72,7 @@ struct SideMenuView: View {
                         .padding(.bottom)
                     
                     HStack {
-                        Text("v. 1.0")
+                        Text(apiVersionApp)
                     }
                     
                     .opacity(show ? 1 : 0)

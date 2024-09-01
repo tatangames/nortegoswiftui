@@ -170,7 +170,7 @@ struct PrincipalView: View {
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             if let window = windowScene.windows.first {
-                window.rootViewController = UIHostingController(rootView: SplashScreenView())
+                window.rootViewController = UIHostingController(rootView: SplashScreenView().preferredColorScheme(.light))
                 window.makeKeyAndVisible()
             }
         }
@@ -239,8 +239,9 @@ struct PrincipalView: View {
                                         let _tiposervicio = listaItem["tiposervicio"].int ?? 0
                                         let _nombre = listaItem["nombre"].string ?? ""
                                         let _imagen = listaItem["imagen"].string ?? ""
+                                        let _descripcion = listaItem["descripcion"].string ?? ""
                                         
-                                        let _arrayTipoServicio = ModeloTipoServicio(id: _id2, id_cateservicio: _idcateservicio, tiposervicio: _tiposervicio, nombre: _nombre, imagen: _imagen)
+                                        let _arrayTipoServicio = ModeloTipoServicio(id: _id2, id_cateservicio: _idcateservicio, tiposervicio: _tiposervicio, nombre: _nombre, imagen: _imagen, descripcion: _descripcion)
                                         
                                         itemsTipoServicio.append(_arrayTipoServicio)
                                     }
@@ -337,7 +338,8 @@ struct ContenidoServicios:View {
                     ForEach(servicioArray.lista, id: \.id) { servicio in
                         
                         CardView(image: servicio.imagen, title: servicio.nombre) {
-                            redireccionamiento(_tiposervicio: servicio.tiposervicio, _id: servicio.id, _titulo: servicio.nombre)
+                            redireccionamiento(_tiposervicio: servicio.tiposervicio, _id: servicio.id, _titulo: servicio.nombre,
+                                               _descripcion: servicio.descripcion)
                         }
                     }
                 }
@@ -361,7 +363,7 @@ struct ContenidoServicios:View {
     
     // ** FUNCIONES **
     
-    func redireccionamiento(_tiposervicio: Int, _id: Int, _titulo: String){
+    func redireccionamiento(_tiposervicio: Int, _id: Int, _titulo: String, _descripcion: String){
         
         // ID SERVICIOS DISPONIBLES, SINO MOSTRAR QUE ESTE SERVICIO NUEVO NECESITA ACTUALIZACION
         let supportedTypes: [Int] = [1,2,3,4]
@@ -370,7 +372,7 @@ struct ContenidoServicios:View {
             if _tiposervicio == 1 {
                 // SERVICIO BASICO
                 // .environmentObject(locationManager)
-                vistaSeleccionada = AnyView(DenunciaBasicaView(idServicio: _id, tituloVista: _titulo))
+                vistaSeleccionada = AnyView(DenunciaBasicaView(idServicio: _id, tituloVista: _titulo, descripcion: _descripcion))
             }
             else if _tiposervicio == 2 {
                 // DENUNCIA DE TALA ARBOL

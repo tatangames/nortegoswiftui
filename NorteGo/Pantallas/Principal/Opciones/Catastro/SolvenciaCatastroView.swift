@@ -18,15 +18,15 @@ struct SolvenciaCatastroView: View {
     @State private var selectedOption: Int = 0
     
     @State private var showToastBool:Bool = false
-    @State private var nombre: String = ""
-    @State private var dui: String = ""
+    @State private var nombre:String = ""
+    @State private var dui:String = ""
     @State private var openLoadingSpinner:Bool = false
     @StateObject private var locationManager = LocationManager()
-    @State private var latitudFinal: String = ""
-    @State private var longitudFinal: String = ""
-    @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
-    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente: String = ""
-    @State private var popDatosEnviados: Bool = false
+    @State private var latitudFinal:String = ""
+    @State private var longitudFinal:String = ""
+    @AppStorage(DatosGuardadosKeys.idToken) private var idToken:String = ""
+    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente:String = ""
+    @State private var popDatosEnviados:Bool = false
     let disposeBag = DisposeBag()
     
     // Variable para almacenar el contenido del toast
@@ -41,10 +41,10 @@ struct SolvenciaCatastroView: View {
                     VStack(alignment: .leading) { // Alinear a la izquierda
                         RadioButton(id: 1, label: "Solvencia de Inmueble", isSelected: $selectedOption)
                         RadioButton(id: 2, label: "Solvencia de Empresa", isSelected: $selectedOption)
+                            .padding(.top, 15)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, 20)
-                    
+                    .padding(.top, 35)
                     
                     // Alinea el texto a la izquierda
                     HStack {
@@ -52,7 +52,7 @@ struct SolvenciaCatastroView: View {
                             .bold()
                         Spacer()
                     }
-                    .padding(.top, 35)
+                    .padding(.top, 45)
                     
                     VStack {
                         TextField("Nombre", text: $nombre)
@@ -136,7 +136,6 @@ struct SolvenciaCatastroView: View {
             .onTapGesture {
                 hideKeyboard()
             }
-            
             
             if openLoadingSpinner {
                 LoadingSpinnerView()

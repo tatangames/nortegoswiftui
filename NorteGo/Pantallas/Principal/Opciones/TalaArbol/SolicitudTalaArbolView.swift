@@ -44,18 +44,13 @@ struct SolicitudTalaArbolView: View {
     @State private var isCameraPresented:Bool = false
     @State private var sheetCamaraGaleria:Bool = false
     @State private var actualizaraImagen:Bool = false
-
-    //** OPCIONES PARA DENUNCIA TALA ARBOL
-    
-    
-    
     
     
     // Variable para almacenar el contenido del toast
     @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
     
     var body: some View {
-     
+        
         ZStack {
             ScrollView {
                 VStack(spacing: 15) {
@@ -63,19 +58,19 @@ struct SolicitudTalaArbolView: View {
                     VStack(alignment: .leading) { // Alinear a la izquierda
                         RadioButton(id: 1, label: "Solicitud Tala de Árbol", isSelected: $selectedOption)
                         RadioButton(id: 2, label: "Denuncia Tala de Árbol", isSelected: $selectedOption)
+                            .padding(.top, 20)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, 20)
+                    .padding(.top, 35)
                     
                     // Muestra la vista correspondiente a la opción seleccionada
                     if selectedOption == 1 {
-                                       
+                        
                         VistaSolicitudTala(NombreCompleto: $NombreCompleto, Telefono: $Telefono, Direccion: $Direccion, NotaOpcional: $NotaOpcional, Escritura: $Escritura)
                         
                         VistaFotografia(selectedImage: $selectedImage, NotaOpcional: $NotaOpcional,
-                                      sheetCamaraGaleria: $sheetCamaraGaleria)
+                                        sheetCamaraGaleria: $sheetCamaraGaleria)
                         
-                     
                         Button(action: {
                             checkedEscritura.toggle()
                         }) {
@@ -95,20 +90,18 @@ struct SolicitudTalaArbolView: View {
                     } else {
                         
                         VistaFotografia(selectedImage: $selectedImage, NotaOpcional: $NotaOpcional,
-                                      sheetCamaraGaleria: $sheetCamaraGaleria)
+                                        sheetCamaraGaleria: $sheetCamaraGaleria)
                     }
-                   
                     
                     Button(action: { // btn ingresar
                         // Acción para el botón ingresar
-                       
+                        
                         if selectedOption == 1{
                             serverSolicitudTalaArbol()
                         }else{
                             serverDenunciaTalaArbol()
                         }
                         
-                                                
                     }) {
                         Text("ENVIAR")
                             .font(.custom("LiberationSans-Bold", size: 16))
@@ -183,7 +176,7 @@ struct SolicitudTalaArbolView: View {
         }
         .sheet(isPresented: $sheetCamaraGaleria) {
             BottomSheetCamaraGaleriaView(onOptionSelected: { option in
-                              
+                
                 if option == 1{
                     checkPhotoLibraryPermission()
                 }else{
@@ -213,7 +206,7 @@ struct SolicitudTalaArbolView: View {
                     }
                 },
                 secondaryButton: .default(Text("Cancelar")) {
-                   
+                    
                 }
             )
         }
@@ -226,7 +219,7 @@ struct SolicitudTalaArbolView: View {
     func serverSolicitudTalaArbol(){
         
         locationManager.requestLocation()
-                
+        
         if NombreCompleto.isEmpty {
             showCustomToast(with: "Nombre es requerido", tipoColor: 1)
             return
@@ -246,7 +239,7 @@ struct SolicitudTalaArbolView: View {
             showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
             return
         }
-                
+        
         
         if actualizaraImagen {
             
@@ -269,7 +262,7 @@ struct SolicitudTalaArbolView: View {
                 "latitud": latitudFinal,
                 "longitud": longitudFinal
             ]
-                   
+            
             let headers: HTTPHeaders = [
                 "Authorization": "Bearer \(idToken)"
             ]
@@ -287,23 +280,23 @@ struct SolicitudTalaArbolView: View {
             .responseData { response in
                 switch response.result {
                 case .success(let data):
-                  
+                    
                     openLoadingSpinner = false
                     
                     let json = JSON(data)
                     if let successValue = json["success"].int {
                         if successValue == 1 {
-                         
+                            
                             // DATOS GUARDADOS
-                             showCustomToast(with: "Información Enviada", tipoColor: 2)
-                             selectedImage = nil
-                             actualizaraImagen = false
-                             NombreCompleto = ""
-                             Telefono = ""
-                             Direccion = ""
-                             NotaOpcional = ""
-                             checkedEscritura = false
-                             popDatosEnviados = true
+                            showCustomToast(with: "Información Enviada", tipoColor: 2)
+                            selectedImage = nil
+                            actualizaraImagen = false
+                            NombreCompleto = ""
+                            Telefono = ""
+                            Direccion = ""
+                            NotaOpcional = ""
+                            checkedEscritura = false
+                            popDatosEnviados = true
                             
                         } else {
                             showCustomToast(with: "Error", tipoColor: 1)
@@ -323,27 +316,27 @@ struct SolicitudTalaArbolView: View {
     
     
     func  serverDenunciaTalaArbol(){
-       
+        
         locationManager.requestLocation()
-                        
+        
         guard let image = selectedImage else {
             showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
             return
         }
-                        
+        
         if actualizaraImagen {
             
             openLoadingSpinner = true
             
             let encodeURL = apiEnviarDatosDenunciaTalaArbol
-   
+            
             let parameters: [String: Any] = [
                 "iduser": idCliente,
                 "nota": NotaOpcional,
                 "latitud": latitudFinal,
                 "longitud": longitudFinal
             ]
-                   
+            
             let headers: HTTPHeaders = [
                 "Authorization": "Bearer \(idToken)"
             ]
@@ -361,19 +354,19 @@ struct SolicitudTalaArbolView: View {
             .responseData { response in
                 switch response.result {
                 case .success(let data):
-                  
+                    
                     openLoadingSpinner = false
                     
                     let json = JSON(data)
                     if let successValue = json["success"].int {
                         if successValue == 1 {
-                         
+                            
                             // DATOS GUARDADOS
-                             showCustomToast(with: "Información Enviada", tipoColor: 2)
-                             selectedImage = nil
-                             actualizaraImagen = false
-                             NotaOpcional = ""
-                             popDatosEnviados = true
+                            showCustomToast(with: "Información Enviada", tipoColor: 2)
+                            selectedImage = nil
+                            actualizaraImagen = false
+                            NotaOpcional = ""
+                            popDatosEnviados = true
                             
                         } else {
                             showCustomToast(with: "Error", tipoColor: 1)
@@ -446,7 +439,7 @@ struct SolicitudTalaArbolView: View {
         case .limited:
             showSettingsAlert = true
         @unknown default:
-           // print("Estado desconocido")
+            // print("Estado desconocido")
             showSettingsAlert = true
         }
     }
@@ -476,7 +469,7 @@ struct SolicitudTalaArbolView: View {
     }
     
     
-  
+    
 }
 
 
@@ -489,7 +482,6 @@ struct VistaSolicitudTala: View {
     @Binding var NotaOpcional: String
     @Binding var Escritura: Int
     
-    
     var body: some View {
         
         // Alinea el texto a la izquierda
@@ -498,7 +490,7 @@ struct VistaSolicitudTala: View {
                 .bold()
             Spacer()
         }
-        .padding(.top, 30)
+        .padding(.top, 35)
         
         VStack {
             TextField("Nombre", text: $NombreCompleto)
@@ -523,6 +515,7 @@ struct VistaSolicitudTala: View {
             .padding(.top, 30)
             
             TextField("Teléfono", text: $Telefono)
+                .keyboardType(.phonePad)
                 .onChange(of: Telefono) { newValue in
                     if newValue.count > 8 {
                         Telefono = String(newValue.prefix(8))
@@ -534,7 +527,6 @@ struct VistaSolicitudTala: View {
             Rectangle()
                 .frame(height: 1) // Altura de la línea
                 .foregroundColor(.gray) // Color de la línea
-            
             
             HStack {
                 Text("Dirección")
@@ -551,15 +543,11 @@ struct VistaSolicitudTala: View {
                 }
                 .padding(.bottom, 0) // Añade espacio entre el texto y la línea
             
-            
             // Línea subrayada
             Rectangle()
                 .frame(height: 1) // Altura de la línea
                 .foregroundColor(.gray) // Color de la línea
-                                  
-            
         }
-        
     }
 }
 
@@ -568,7 +556,6 @@ struct VistaFotografia: View {
     @Binding var selectedImage:UIImage?
     @Binding var NotaOpcional: String
     @Binding var sheetCamaraGaleria:Bool
-
     
     var body: some View {
         
@@ -595,14 +582,13 @@ struct VistaFotografia: View {
             }
         }
         .padding(.top, 20)
-                                    
+        
         HStack {
             Text("Nota (Opcional)")
                 .bold()
             Spacer()
         }
         .padding(.top, 45)
-        
         
         VStack {
             TextField("Nota", text: $NotaOpcional)
@@ -618,9 +604,6 @@ struct VistaFotografia: View {
                 .frame(height: 1) // Altura de la línea
                 .foregroundColor(.gray) // Color de la línea
         }
-        
-                
-       
     }
 }
 

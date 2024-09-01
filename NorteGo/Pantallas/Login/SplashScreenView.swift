@@ -36,9 +36,6 @@ struct SplashScreenView: View {
                 PrincipalView()
             }
         }
-        
-        
-        
     } // end-body
 }
 
