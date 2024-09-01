@@ -5,39 +5,28 @@
 //  Created by Jonathan  Moran on 30/8/24.
 //
 
-import Foundation
-import CoreLocation
 import SwiftUI
+import CoreLocation
 
-@MainActor // Esto asegura que todas las actualizaciones de la UI se hagan en el hilo principal
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager = CLLocationManager()
-    
-    @Published var latitude: Double = 0.0
-    @Published var longitude: Double = 0.0
-    @Published var isLocationAvailable = false
-    
+
+    @Published var location: CLLocationCoordinate2D?
+
     override init() {
         super.init()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.requestWhenInUseAuthorization()
     }
-    
-    func requestLocation() {
-        locationManager.requestLocation()
+
+    func getLocation() {
+        self.locationManager.startUpdatingLocation()
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last {
-            self.latitude = location.coordinate.latitude
-            self.longitude = location.coordinate.longitude
-            self.isLocationAvailable = true
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Error getting location: \(error.localizedDescription)")
-        self.isLocationAvailable = false
+        guard let lastLocation = locations.last else { return }
+        self.location = lastLocation.coordinate
+        self.locationManager.stopUpdatingLocation() // Detener actualizaciones después de obtener la ubicación
     }
 }

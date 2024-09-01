@@ -14,19 +14,21 @@ import AlertToast
 struct SolvenciaCatastroView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State var tituloVista: String = ""
-    @State private var selectedOption: Int = 0
-    
+    @State var tituloVista:String = ""
+    @State private var selectedOption:Int = 0
     @State private var showToastBool:Bool = false
     @State private var nombre:String = ""
     @State private var dui:String = ""
     @State private var openLoadingSpinner:Bool = false
-    @StateObject private var locationManager = LocationManager()
-    @State private var latitudFinal:String = ""
-    @State private var longitudFinal:String = ""
     @AppStorage(DatosGuardadosKeys.idToken) private var idToken:String = ""
     @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente:String = ""
     @State private var popDatosEnviados:Bool = false
+    
+    //GPS
+    @State private var latitudFinal:String = ""
+    @State private var longitudFinal:String = ""
+    @StateObject private var locationManager = LocationManager()
+    
     let disposeBag = DisposeBag()
     
     // Variable para almacenar el contenido del toast
@@ -108,10 +110,8 @@ struct SolvenciaCatastroView: View {
                     .opacity(1.0)
                     .buttonStyle(NoOpacityChangeButtonStyle())
                     Spacer()
-                }
-                
-                .padding()
-                
+                }               
+                .padding()                
                 .navigationTitle(tituloVista)
                 .navigationBarBackButtonHidden(true)
                 .toolbar {
@@ -126,12 +126,16 @@ struct SolvenciaCatastroView: View {
                         }
                     }
                 }
-                .onChange(of: locationManager.latitude) { newLatitude in
-                    latitudFinal = String(format: "%.6f", newLatitude)
+                .onReceive(locationManager.$location) { newLocation in
+                    if let location = newLocation {
+                        latitudFinal = String(location.latitude)
+                        longitudFinal = String(location.longitude)
+                    }
                 }
-                .onChange(of: locationManager.longitude) { newLongitude in
-                    longitudFinal = String(format: "%.6f", newLongitude)
+                .onAppear{
+                    locationManager.getLocation()
                 }
+                
             }
             .onTapGesture {
                 hideKeyboard()
@@ -188,7 +192,7 @@ struct SolvenciaCatastroView: View {
     func serverEnviarDatos(){
         
         // localizacion
-        locationManager.requestLocation()
+        locationManager.getLocation()
         
         if(selectedOption == 0){
             showCustomToast(with: "Seleccionar Tipo Solvencia", tipoColor: 1)
@@ -273,8 +277,6 @@ struct SolvenciaCatastroView: View {
         .disposed(by: disposeBag)
     }
 }
-
-
 
 
 #Preview {

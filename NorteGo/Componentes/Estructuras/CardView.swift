@@ -24,12 +24,13 @@ struct CardView: View {
                 .frame(height: 100)
                 .padding(.top, 10)
             
-            Text(title)
-                .font(.headline)
-                .padding(.horizontal, 10)
-                .padding(.bottom, 10)
-            
-            
+            HStack {
+                Spacer()
+                Text(title)
+                    .font(.headline)
+                    .padding(.bottom, 10)
+                Spacer()
+            }
         }
         .frame(maxWidth: .infinity)
         .background(Color.white)

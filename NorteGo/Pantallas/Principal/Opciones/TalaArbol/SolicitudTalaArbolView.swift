@@ -15,36 +15,37 @@ import AlertToast
 struct SolicitudTalaArbolView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State var idServicio: Int = 0
-    @State var tituloVista: String = ""
+    @State var idServicio:Int = 0
+    @State var tituloVista:String = ""
     
-    @State private var selectedOption: Int = 1
+    @State private var selectedOption:Int = 1
     @State private var openLoadingSpinner:Bool = false
-    @StateObject private var locationManager = LocationManager()
-    @State private var latitudFinal: String = ""
-    @State private var longitudFinal: String = ""
-    @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
-    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente: String = ""
+    @AppStorage(DatosGuardadosKeys.idToken) private var idToken:String = ""
+    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente:String = ""
     let disposeBag = DisposeBag()
     @State private var showToastBool:Bool = false
     @State private var popDatosEnviados:Bool = false
     
     //** OPCIONES PARA SOLICITUD TALA ARBOL
-    @State private var NombreCompleto: String = ""
-    @State private var Telefono: String = ""
-    @State private var Direccion: String = ""
-    @State private var NotaOpcional: String = ""
-    @State private var Escritura: Int = 0
-    @State private var checkedEscritura: Bool = false
+    @State private var NombreCompleto:String = ""
+    @State private var Telefono:String = ""
+    @State private var Direccion:String = ""
+    @State private var NotaOpcional:String = ""
+    @State private var Escritura:Int = 0
+    @State private var checkedEscritura:Bool = false
     
-    @State var selectedImage: UIImage?
-    @State var selectedItem: PhotosPickerItem? = nil
+    @State var selectedImage:UIImage?
+    @State var selectedItem:PhotosPickerItem? = nil
     @State private var isPickerPresented:Bool = false
     @State private var showSettingsAlert:Bool = false
     @State private var isCameraPresented:Bool = false
     @State private var sheetCamaraGaleria:Bool = false
     @State private var actualizaraImagen:Bool = false
     
+    // GPS
+    @State private var latitudFinal: String = ""
+    @State private var longitudFinal: String = ""
+    @StateObject private var locationManager = LocationManager()
     
     // Variable para almacenar el contenido del toast
     @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
@@ -149,24 +150,26 @@ struct SolicitudTalaArbolView: View {
                         }
                     }
                 }
-                .onChange(of: locationManager.latitude) { newLatitude in
-                    latitudFinal = String(format: "%.6f", newLatitude)
+            
+                .onReceive(locationManager.$location) { newLocation in
+                    if let location = newLocation {
+                        latitudFinal = String(location.latitude)
+                        longitudFinal = String(location.longitude)
+                    }
                 }
-                .onChange(of: locationManager.longitude) { newLongitude in
-                    longitudFinal = String(format: "%.6f", newLongitude)
+                .onAppear{
+                    locationManager.getLocation()
                 }
             }
             .onTapGesture {
                 hideKeyboard()
             }
-            
-            
+                        
             if openLoadingSpinner {
                 LoadingSpinnerView()
                     .transition(.opacity) // Transición de opacidad
                     .zIndex(10)
             }
-            
             if popDatosEnviados {
                 PopImg1BtnView(isActive: $popDatosEnviados, imagen: .constant("infocolor"), bLlevaTitulo: .constant(true), titulo: .constant("Enviado"), descripcion: .constant("Puede verificar la solicitud en el Menu, opción Solicitudes"), txtAceptar: .constant("Aceptar"), acceptAction: {
                     
@@ -184,7 +187,6 @@ struct SolicitudTalaArbolView: View {
                 }
                 
                 // actualizar localizacion aqui
-                locationManager.requestLocation()
                 sheetCamaraGaleria = false // Cierra el bottom sheet
             })
         }
@@ -218,7 +220,7 @@ struct SolicitudTalaArbolView: View {
     
     func serverSolicitudTalaArbol(){
         
-        locationManager.requestLocation()
+      //  locationManager.requestLocation()
         
         if NombreCompleto.isEmpty {
             showCustomToast(with: "Nombre es requerido", tipoColor: 1)
@@ -239,8 +241,7 @@ struct SolicitudTalaArbolView: View {
             showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
             return
         }
-        
-        
+                
         if actualizaraImagen {
             
             openLoadingSpinner = true
@@ -268,7 +269,7 @@ struct SolicitudTalaArbolView: View {
             ]
             
             AF.upload(multipartFormData: { multipartFormData in
-                if let imageData = image.jpegData(compressionQuality: 0.8) {
+                if let imageData = image.jpegData(compressionQuality: 0.5) {
                     multipartFormData.append(imageData, withName: "imagen", fileName: "imagen.jpg", mimeType: "image/jpeg")
                 }
                 for (key, value) in parameters {
@@ -317,7 +318,7 @@ struct SolicitudTalaArbolView: View {
     
     func  serverDenunciaTalaArbol(){
         
-        locationManager.requestLocation()
+        locationManager.getLocation()
         
         guard let image = selectedImage else {
             showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
@@ -620,6 +621,6 @@ struct VistaDenunciaTala: View {
 
 struct SolicitudTalaArvolView_Previews: PreviewProvider {
     static var previews: some View {
-        SolicitudTalaArbolView().environmentObject(LocationManager())
+        SolicitudTalaArbolView()
     }
 }

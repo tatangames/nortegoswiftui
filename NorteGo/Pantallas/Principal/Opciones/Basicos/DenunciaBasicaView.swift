@@ -19,25 +19,27 @@ struct DenunciaBasicaView: View {
     @State var tituloVista: String = ""
     
     @State private var showToastBool:Bool = false
-    @State private var selectedImage: UIImage?
-    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImage:UIImage?
+    @State private var selectedItem:PhotosPickerItem? = nil
     @State private var isPickerPresented:Bool = false
     @State private var showSettingsAlert:Bool = false
     @State private var isCameraPresented:Bool = false
     @State private var sheetCamaraGaleria:Bool = false
-    @State private var notaOpcional: String = ""
+    @State private var notaOpcional:String = ""
     @State private var actualizaraImagen:Bool = false
     @State private var openLoadingSpinner:Bool = false
-    @StateObject private var locationManager = LocationManager()
-    @State private var latitudFinal: String = ""
-    @State private var longitudFinal: String = ""
-    @State private var popRangoDenunciaPendiente: Bool = false
-    @State private var popDatosEnviados: Bool = false
+    @State private var latitudFinal:String = ""
+    @State private var longitudFinal:String = ""
+    @State private var popRangoDenunciaPendiente:Bool = false
+    @State private var popDatosEnviados:Bool = false
     
     // cuando una solicitud esta pendiente en un rango segun server
     @State private var tituloRango: String = ""
     @State private var mensajeRango: String = ""
     @State var descripcion:String = ""
+    
+    // GPS
+    @StateObject private var locationManager = LocationManager()
     
     @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
     @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente: String = ""
@@ -70,6 +72,7 @@ struct DenunciaBasicaView: View {
                     
                     Button(action: {
                         // Abrir bottom sheet
+                        locationManager.getLocation() // gps
                         sheetCamaraGaleria.toggle()
                     }) {
                         if let selectedImage = selectedImage {
@@ -159,12 +162,17 @@ struct DenunciaBasicaView: View {
                         }
                     }
                 }
-                .onChange(of: locationManager.latitude) { newLatitude in
-                    latitudFinal = String(format: "%.6f", newLatitude)
+                
+                .onReceive(locationManager.$location) { newLocation in
+                    if let location = newLocation {
+                        latitudFinal = String(location.latitude)
+                        longitudFinal = String(location.longitude)
+                    }
                 }
-                .onChange(of: locationManager.longitude) { newLongitude in
-                    longitudFinal = String(format: "%.6f", newLongitude)
+                .onAppear{
+                    locationManager.getLocation()
                 }
+                
             }
             .onTapGesture {
                 hideKeyboard()
@@ -201,8 +209,6 @@ struct DenunciaBasicaView: View {
                     checkCameraPermission()
                 }
                 
-                // actualizar localizacion aqui
-                locationManager.requestLocation()
                 sheetCamaraGaleria = false // Cierra el bottom sheet
             })
         }
@@ -237,6 +243,8 @@ struct DenunciaBasicaView: View {
  
     func serverSubirInformacion() {
                 
+        locationManager.getLocation()
+        
         guard let image = selectedImage else {
             showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
             return
@@ -261,7 +269,7 @@ struct DenunciaBasicaView: View {
             ]
          
             AF.upload(multipartFormData: { multipartFormData in
-                if let imageData = image.jpegData(compressionQuality: 0.8) {
+                if let imageData = image.jpegData(compressionQuality: 0.5) {
                     multipartFormData.append(imageData, withName: "imagen", fileName: "imagen.jpg", mimeType: "image/jpeg")
                 }
                 for (key, value) in parameters {
@@ -396,6 +404,6 @@ struct DenunciaBasicaView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        DenunciaBasicaView().environmentObject(LocationManager())
+        DenunciaBasicaView()
     }
 }
