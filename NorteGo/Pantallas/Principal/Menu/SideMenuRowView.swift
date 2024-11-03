@@ -18,17 +18,20 @@ struct SideMenuRowView: View {
                 .resizable()
                 .renderingMode(.template)
                 .frame(width: 24, height: 24)
-                .foregroundColor(isSelected ? .blue : .gray) // Color azul si está seleccionado
+                //.foregroundColor(isSelected ? .blue : .gray) // Color azul si está seleccionado
+                .foregroundColor(.gray)
             
             Text(title)
-                .foregroundColor(isSelected ? .blue : .black) // Color azul si está seleccionad
+               // .foregroundColor(isSelected ? .blue : .black) // Color azul si está seleccionad
+                .foregroundColor(.black)
                 .font(.custom("Montserrat-Medium", size: 15))
             
             Spacer(minLength: 0)
         }
         .padding(.vertical, 12) // Separación vertical
         .padding(.horizontal, 12) // Separación horizontal
-        .background(isSelected ? Color.blue.opacity(0.1) : Color.clear) // Fondo si está seleccionado
+        //.background(isSelected ? Color.blue.opacity(0.1) : Color.clear) // Fondo si está seleccionado
+        .background(Color.clear)
         .cornerRadius(8) // Bordes redondeados
     }
 }

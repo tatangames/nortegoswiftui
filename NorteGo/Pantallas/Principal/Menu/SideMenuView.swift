@@ -31,7 +31,7 @@ struct SideMenuView: View {
                 
                 SideMenuHeaderView()
                     .frame(height: 60)
-                    .background(Color("cazulv1"))
+                    .background(AppColors.ColorAzulGob)
                 
                 VStack(alignment: .leading){
                     

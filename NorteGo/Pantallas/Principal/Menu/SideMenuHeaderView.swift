@@ -17,7 +17,7 @@ struct SideMenuHeaderView: View {
             
         }
         .frame(maxWidth: .infinity, maxHeight: 80) // Ajustar el tamaño del encabezado
-        .background(Color("cazulv1"))
+        .background(AppColors.ColorAzulGob)
         .foregroundColor(.blue) // Asegura que el color del texto sea blanco
         .multilineTextAlignment(.center) // Alineación del texto en el centro
     }

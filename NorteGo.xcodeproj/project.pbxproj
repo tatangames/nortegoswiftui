@@ -24,6 +24,10 @@
 		8F2F45B22C7D64BC00FE01F6 /* ModeloListadoSolicitudes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2F45B12C7D64BC00FE01F6 /* ModeloListadoSolicitudes.swift */; };
 		8F48E36B2C80105C00CA90F2 /* SolicitudTalaArbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F48E36A2C80105C00CA90F2 /* SolicitudTalaArbolView.swift */; };
 		8F48E36E2C8012DB00CA90F2 /* SolvenciaCatastroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F48E36D2C8012DB00CA90F2 /* SolvenciaCatastroView.swift */; };
+		8F4CC8212CD1293C0001DAF9 /* ListadoSolicitudesOcultarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4CC8202CD1293C0001DAF9 /* ListadoSolicitudesOcultarViewModel.swift */; };
+		8F4CC8232CD1316E0001DAF9 /* ListadoSolicitudesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4CC8222CD1316E0001DAF9 /* ListadoSolicitudesViewModel.swift */; };
+		8F4CC8262CD149570001DAF9 /* PrincipalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4CC8252CD149570001DAF9 /* PrincipalViewModel.swift */; };
+		8F4CC8292CD171F10001DAF9 /* DenunciaBasicaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4CC8282CD171F10001DAF9 /* DenunciaBasicaViewModel.swift */; };
 		8F625A0C2C780E2300506617 /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F625A0B2C780E2300506617 /* SideMenuView.swift */; };
 		8F625A0E2C780E7500506617 /* SideMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F625A0D2C780E7500506617 /* SideMenuHeaderView.swift */; };
 		8F625A112C78116100506617 /* SideMenuRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F625A102C78116100506617 /* SideMenuRowView.swift */; };
@@ -43,6 +47,14 @@
 		8F7CD8402C703C7200BD7410 /* montserratregular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F7CD83C2C703C7200BD7410 /* montserratregular.ttf */; };
 		8F7CD8412C703C7200BD7410 /* medel.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F7CD83D2C703C7200BD7410 /* medel.ttf */; };
 		8F7CD8422C703C7200BD7410 /* montserratmedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F7CD83E2C703C7200BD7410 /* montserratmedium.ttf */; };
+		8F8748852CCBFB9B00511490 /* CodigoOtpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8748842CCBFB9B00511490 /* CodigoOtpViewModel.swift */; };
+		8F8748872CCC050B00511490 /* CodigoOtpReenvioSmsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8748862CCC050B00511490 /* CodigoOtpReenvioSmsViewModel.swift */; };
+		8F8BAA922CC94A42004DBEFD /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8BAA912CC94A42004DBEFD /* AppColors.swift */; };
+		8F8BAA952CC95339004DBEFD /* ToastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8BAA942CC95339004DBEFD /* ToastViewModel.swift */; };
+		8F8BAA992CC95C7E004DBEFD /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8BAA982CC95C7E004DBEFD /* LoginViewModel.swift */; };
+		8F8EC45F2CD8011C00A60AD2 /* SolvenciaCatastroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8EC45E2CD8011C00A60AD2 /* SolvenciaCatastroViewModel.swift */; };
+		8F8EC4622CD817D400A60AD2 /* SolicitudTalaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8EC4612CD817D400A60AD2 /* SolicitudTalaViewModel.swift */; };
+		8F8EC4642CD8185900A60AD2 /* DenunciaTalaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8EC4632CD8185900A60AD2 /* DenunciaTalaViewModel.swift */; };
 		8FA4067F2C76EBB7000CFB32 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA4067E2C76EBB7000CFB32 /* TimerViewModel.swift */; };
 		8FA5DF752C821E0C003BBA81 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA5DF742C821E0C003BBA81 /* LocationManager.swift */; };
 		8FA5DF7B2C828D85003BBA81 /* BottomSheetCamaraGaleriaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA5DF7A2C828D85003BBA81 /* BottomSheetCamaraGaleriaView.swift */; };
@@ -90,6 +102,10 @@
 		8F2F45B12C7D64BC00FE01F6 /* ModeloListadoSolicitudes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeloListadoSolicitudes.swift; sourceTree = "<group>"; };
 		8F48E36A2C80105C00CA90F2 /* SolicitudTalaArbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolicitudTalaArbolView.swift; sourceTree = "<group>"; };
 		8F48E36D2C8012DB00CA90F2 /* SolvenciaCatastroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolvenciaCatastroView.swift; sourceTree = "<group>"; };
+		8F4CC8202CD1293C0001DAF9 /* ListadoSolicitudesOcultarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListadoSolicitudesOcultarViewModel.swift; sourceTree = "<group>"; };
+		8F4CC8222CD1316E0001DAF9 /* ListadoSolicitudesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListadoSolicitudesViewModel.swift; sourceTree = "<group>"; };
+		8F4CC8252CD149570001DAF9 /* PrincipalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrincipalViewModel.swift; sourceTree = "<group>"; };
+		8F4CC8282CD171F10001DAF9 /* DenunciaBasicaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DenunciaBasicaViewModel.swift; sourceTree = "<group>"; };
 		8F625A0B2C780E2300506617 /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
 		8F625A0D2C780E7500506617 /* SideMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuHeaderView.swift; sourceTree = "<group>"; };
 		8F625A102C78116100506617 /* SideMenuRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuRowView.swift; sourceTree = "<group>"; };
@@ -113,6 +129,14 @@
 		8F7CD83D2C703C7200BD7410 /* medel.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = medel.ttf; sourceTree = "<group>"; };
 		8F7CD83E2C703C7200BD7410 /* montserratmedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = montserratmedium.ttf; sourceTree = "<group>"; };
 		8F7CD8432C703CF300BD7410 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8F8748842CCBFB9B00511490 /* CodigoOtpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodigoOtpViewModel.swift; sourceTree = "<group>"; };
+		8F8748862CCC050B00511490 /* CodigoOtpReenvioSmsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodigoOtpReenvioSmsViewModel.swift; sourceTree = "<group>"; };
+		8F8BAA912CC94A42004DBEFD /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		8F8BAA942CC95339004DBEFD /* ToastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModel.swift; sourceTree = "<group>"; };
+		8F8BAA982CC95C7E004DBEFD /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		8F8EC45E2CD8011C00A60AD2 /* SolvenciaCatastroViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolvenciaCatastroViewModel.swift; sourceTree = "<group>"; };
+		8F8EC4612CD817D400A60AD2 /* SolicitudTalaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolicitudTalaViewModel.swift; sourceTree = "<group>"; };
+		8F8EC4632CD8185900A60AD2 /* DenunciaTalaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DenunciaTalaViewModel.swift; sourceTree = "<group>"; };
 		8FA4067E2C76EBB7000CFB32 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		8FA5DF742C821E0C003BBA81 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		8FA5DF7A2C828D85003BBA81 /* BottomSheetCamaraGaleriaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetCamaraGaleriaView.swift; sourceTree = "<group>"; };
@@ -238,6 +262,41 @@
 			path = Catastro;
 			sourceTree = "<group>";
 		};
+		8F4CC81E2CD126DB0001DAF9 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				8F2F45AE2C7D5F9700FE01F6 /* Listado */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		8F4CC81F2CD128F90001DAF9 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				8F4CC8202CD1293C0001DAF9 /* ListadoSolicitudesOcultarViewModel.swift */,
+				8F4CC8222CD1316E0001DAF9 /* ListadoSolicitudesViewModel.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		8F4CC8242CD1493C0001DAF9 /* Principal */ = {
+			isa = PBXGroup;
+			children = (
+				8F4CC8252CD149570001DAF9 /* PrincipalViewModel.swift */,
+			);
+			path = Principal;
+			sourceTree = "<group>";
+		};
+		8F4CC8272CD1719D0001DAF9 /* Opciones */ = {
+			isa = PBXGroup;
+			children = (
+				8F8EC4602CD8175300A60AD2 /* Tala */,
+				8F4CC8282CD171F10001DAF9 /* DenunciaBasicaViewModel.swift */,
+				8F8EC45E2CD8011C00A60AD2 /* SolvenciaCatastroViewModel.swift */,
+			);
+			path = Opciones;
+			sourceTree = "<group>";
+		};
 		8F625A0A2C780E1000506617 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,7 +315,6 @@
 				8F48E36C2C8012CC00CA90F2 /* Catastro */,
 				8F48E3692C80100500CA90F2 /* TalaArbol */,
 				8F3A0F2A2C7ED43C0056DE7D /* Basicos */,
-				8F2F45AE2C7D5F9700FE01F6 /* Listado */,
 			);
 			path = Opciones;
 			sourceTree = "<group>";
@@ -286,15 +344,16 @@
 		8F7CD8032C7019C200BD7410 /* NorteGo */ = {
 			isa = PBXGroup;
 			children = (
+				8F7CD8082C7019C300BD7410 /* Assets.xcassets */,
+				8F7CD8432C703CF300BD7410 /* Info.plist */,
 				8F1B3F6B2C7B9A40002389C6 /* Modelos */,
 				8F05E8922C72E7D700F720A3 /* Network */,
 				8FDDDA032C70F8E70082E577 /* Componentes */,
-				8F7CD8432C703CF300BD7410 /* Info.plist */,
 				8F7CD83A2C7038A100BD7410 /* Fonts */,
+				8F8BAA962CC95B81004DBEFD /* ViewModel */,
 				8F7CD8342C7021A400BD7410 /* Extras */,
 				8F7CD82E2C701C7200BD7410 /* Pantallas */,
 				8F7CD8042C7019C200BD7410 /* NorteGoApp.swift */,
-				8F7CD8082C7019C300BD7410 /* Assets.xcassets */,
 				8F7CD80A2C7019C300BD7410 /* Preview Content */,
 			);
 			path = NorteGo;
@@ -357,6 +416,7 @@
 		8F7CD8372C702A3B00BD7410 /* Principal */ = {
 			isa = PBXGroup;
 			children = (
+				8F4CC81E2CD126DB0001DAF9 /* Tabs */,
 				8F625A142C78383C00506617 /* Opciones */,
 				8F625A0A2C780E1000506617 /* Menu */,
 				8F7CD8382C702A4C00BD7410 /* PrincipalView.swift */,
@@ -373,6 +433,52 @@
 				8F7CD83C2C703C7200BD7410 /* montserratregular.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		8F8BAA902CC94A28004DBEFD /* Colores */ = {
+			isa = PBXGroup;
+			children = (
+				8F8BAA912CC94A42004DBEFD /* AppColors.swift */,
+			);
+			path = Colores;
+			sourceTree = "<group>";
+		};
+		8F8BAA932CC95275004DBEFD /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				8F8BAA942CC95339004DBEFD /* ToastViewModel.swift */,
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
+		8F8BAA962CC95B81004DBEFD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8F4CC8272CD1719D0001DAF9 /* Opciones */,
+				8F4CC8242CD1493C0001DAF9 /* Principal */,
+				8F4CC81F2CD128F90001DAF9 /* Tabs */,
+				8F8BAA972CC95C72004DBEFD /* Login */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8F8BAA972CC95C72004DBEFD /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				8F8BAA982CC95C7E004DBEFD /* LoginViewModel.swift */,
+				8F8748842CCBFB9B00511490 /* CodigoOtpViewModel.swift */,
+				8F8748862CCC050B00511490 /* CodigoOtpReenvioSmsViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		8F8EC4602CD8175300A60AD2 /* Tala */ = {
+			isa = PBXGroup;
+			children = (
+				8F8EC4612CD817D400A60AD2 /* SolicitudTalaViewModel.swift */,
+				8F8EC4632CD8185900A60AD2 /* DenunciaTalaViewModel.swift */,
+			);
+			path = Tala;
 			sourceTree = "<group>";
 		};
 		8FA4067D2C76EBA9000CFB32 /* Timer */ = {
@@ -394,6 +500,8 @@
 		8FDDDA032C70F8E70082E577 /* Componentes */ = {
 			isa = PBXGroup;
 			children = (
+				8F8BAA932CC95275004DBEFD /* Toast */,
+				8F8BAA902CC94A28004DBEFD /* Colores */,
 				8FA5DF792C828D70003BBA81 /* Camara */,
 				8F2F45AD2C7D5D4500FE01F6 /* Estructuras */,
 				8FA4067D2C76EBA9000CFB32 /* Timer */,
@@ -658,6 +766,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FA5DF7B2C828D85003BBA81 /* BottomSheetCamaraGaleriaView.swift in Sources */,
+				8F4CC8262CD149570001DAF9 /* PrincipalViewModel.swift in Sources */,
 				8F7CD8392C702A4C00BD7410 /* PrincipalView.swift in Sources */,
 				8F625A0C2C780E2300506617 /* SideMenuView.swift in Sources */,
 				8F48E36E2C8012DB00CA90F2 /* SolvenciaCatastroView.swift in Sources */,
@@ -669,24 +778,35 @@
 				8F7CD8312C701C9800BD7410 /* LoginView.swift in Sources */,
 				8F2320872C757C3D0009F15A /* OTPInput.swift in Sources */,
 				8F0831B42C7AB46C00CCC0D7 /* ToolbarPrincipalView.swift in Sources */,
+				8F8748872CCC050B00511490 /* CodigoOtpReenvioSmsViewModel.swift in Sources */,
 				8F1B3F712C7BBA3E002389C6 /* ModeloTipoServicioArray.swift in Sources */,
+				8F8BAA992CC95C7E004DBEFD /* LoginViewModel.swift in Sources */,
 				8FDDDA0B2C7190920082E577 /* CustomModal2ButtonView.swift in Sources */,
+				8F8748852CCBFB9B00511490 /* CodigoOtpViewModel.swift in Sources */,
 				8F05E8912C72A79500F720A3 /* StructReutilizable.swift in Sources */,
+				8F8BAA922CC94A42004DBEFD /* AppColors.swift in Sources */,
+				8F8EC45F2CD8011C00A60AD2 /* SolvenciaCatastroViewModel.swift in Sources */,
+				8F8EC4622CD817D400A60AD2 /* SolicitudTalaViewModel.swift in Sources */,
 				8F05E88D2C72749700F720A3 /* PopImg2BtnView.swift in Sources */,
 				8F7CD8052C7019C200BD7410 /* NorteGoApp.swift in Sources */,
 				8F2F45B22C7D64BC00FE01F6 /* ModeloListadoSolicitudes.swift in Sources */,
+				8F4CC8232CD1316E0001DAF9 /* ListadoSolicitudesViewModel.swift in Sources */,
 				8F1B3F6F2C7B9A9B002389C6 /* ModeloTipoServicio.swift in Sources */,
 				8F05E8942C72E83800F720A3 /* ApiNetwork.swift in Sources */,
 				8FDDDA072C710DC10082E577 /* CustomModalView.swift in Sources */,
 				8FDDDA092C7147170082E577 /* LoadingSpinnerView.swift in Sources */,
 				8F7CD8332C701F4200BD7410 /* SplashScreenView.swift in Sources */,
 				8FA4067F2C76EBB7000CFB32 /* TimerViewModel.swift in Sources */,
+				8F4CC8292CD171F10001DAF9 /* DenunciaBasicaViewModel.swift in Sources */,
 				8F2320852C756D7C0009F15A /* CodigoOtpView.swift in Sources */,
+				8F8BAA952CC95339004DBEFD /* ToastViewModel.swift in Sources */,
+				8F8EC4642CD8185900A60AD2 /* DenunciaTalaViewModel.swift in Sources */,
 				8F625A0E2C780E7500506617 /* SideMenuHeaderView.swift in Sources */,
 				8F2F45AC2C7D5C5B00FE01F6 /* CardView.swift in Sources */,
 				8F625A132C78123200506617 /* SideMenuOptionModel.swift in Sources */,
 				8F05E88F2C72807F00F720A3 /* PopImg1BtnView.swift in Sources */,
 				8FDDDA052C70F8F40082E577 /* ListaView.swift in Sources */,
+				8F4CC8212CD1293C0001DAF9 /* ListadoSolicitudesOcultarViewModel.swift in Sources */,
 				8F625A182C783B9E00506617 /* DenunciaBasicaView.swift in Sources */,
 				8F625A112C78116100506617 /* SideMenuRowView.swift in Sources */,
 			);
@@ -858,6 +978,11 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NorteGo/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Necesitamos acceso a la cámara para tomar fotos";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "La App requiere acceso a su localización";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "La App requiere acceso a su localización";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Necesitamos acceso a la galería para seleccionar fotos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -867,7 +992,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tatanstudios.NorteGo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -894,6 +1019,11 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NorteGo/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Necesitamos acceso a la cámara para tomar fotos";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "La App requiere acceso a su localización";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "La App requiere acceso a su localización";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Necesitamos acceso a la galería para seleccionar fotos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -903,7 +1033,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tatanstudios.NorteGo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

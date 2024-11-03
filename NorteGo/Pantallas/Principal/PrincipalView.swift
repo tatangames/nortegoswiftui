@@ -15,30 +15,28 @@ import SDWebImageSwiftUI
 
 struct PrincipalView: View {
     
-    @State var width = UIScreen.main.bounds.width - 90
-    @State var x = -UIScreen.main.bounds.width + 90
+    @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
+    
+    @State private var width = UIScreen.main.bounds.width - 90
+    @State private var x = -UIScreen.main.bounds.width + 90
     @State private var pantallaCargada:Bool = false
     @State private var openLoadingSpinner:Bool = true
     @State private var showToastBool:Bool = false
     @State private var popNumeroBloqueado: Bool = false
     @State private var popCerrarSesion: Bool = false
+    @State private var datosCargados:Bool = false
+    @State private var popNuevoServicio:Bool = false
+    @State private var popNuevaActualizacion: Bool = false
+    @State private var appVersion:String = Bundle.main.appVersion
+    @State private var popVista:Bool = false
+    @State private var vistaSeleccionada: AnyView? = nil
+    @StateObject var viewModel = PrincipalViewModel()
+    @StateObject private var toastViewModel = ToastViewModel()
+    
     @State var itemsSlider: [ModeloSlider] = []
     @State var itemsTipoServicioArray: [ModeloTipoServicioArray] = []
     @State var itemsTipoServicio: [ModeloTipoServicio] = []
-    @State private var datosCargados:Bool = false
-    @State var popNuevoServicio:Bool = false
-    @State private var popNuevaActualizacion: Bool = false
-    
-    
-    @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
     let disposeBag = DisposeBag()
-    let appBuild: String = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
-    
-    // Variable para almacenar el contenido del toast
-    @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
-    
-    @State var popVista:Bool = false
-    @State var vistaSeleccionada: AnyView? = nil
     
     var body: some View {
         
@@ -47,14 +45,11 @@ struct PrincipalView: View {
                 
                 if(pantallaCargada){
                     VStack(spacing: 0) {
-                        
-                        
                         ToolbarPrincipalView(x: $x)
                         ContenidoServicios(itemsSlider: itemsSlider,
                                            itemServicioArray: itemsTipoServicioArray,
                                            popNuevoServicioBindind: $popNuevoServicio,
-                                           vistaSeleccionada: $vistaSeleccionada)
-                        
+                                           vistaSeleccionada: $vistaSeleccionada)                        
                     }
                     SideMenuView(x: $x, popCerrarSesion: $popCerrarSesion)
                         .shadow(color: Color.black.opacity(x != 0 ? 0.1 : 0), radius: 5,
@@ -70,9 +65,7 @@ struct PrincipalView: View {
                 }else{
                     ContenedorShimmer().shimmering()
                 }
-                
-               
-                
+                                
                 if openLoadingSpinner {
                     LoadingSpinnerView()
                         .transition(.opacity) // Transición de opacidad
@@ -88,7 +81,7 @@ struct PrincipalView: View {
                     .zIndex(1)
                 }
                 
-                // Pop-up numero bloqueado
+                // pop nueva actualizacion
                 if popNuevaActualizacion {
                     PopImg2BtnView(isActive: $popNuevaActualizacion, imagen: .constant("infocolor"), descripcion: .constant("Hay una nueva versión disponible. ¿Desea actualizar ahora?"), txtCancelar: .constant("No"), txtAceptar: .constant("Actualizar"), cancelAction: {}, acceptAction: {
                         if let url = URL(string: apiURLAppleStore) {
@@ -97,6 +90,7 @@ struct PrincipalView: View {
                     }).zIndex(1)
                 }
                 
+                // cuando haya nueva version
                 if popNuevoServicio {
                     PopImg2BtnView(isActive: $popNuevoServicio, imagen: .constant("infocolor"), descripcion: .constant("Por favor, actualiza la aplicación para acceder a este servicio"), txtCancelar: .constant("No"), txtAceptar: .constant("Actualizar"), cancelAction: {popNuevoServicio = false}, acceptAction: {
                         if let url = URL(string: apiURLAppleStore) {
@@ -105,14 +99,14 @@ struct PrincipalView: View {
                     }).zIndex(1)
                 }
                 
+                // cierre de sesion
                 if popCerrarSesion {
                     PopImg2BtnView(isActive: $popCerrarSesion, imagen: .constant("infocolor"), descripcion: .constant("Cerrar Sesión"), txtCancelar: .constant("No"), txtAceptar: .constant("Si"), cancelAction: {popCerrarSesion = false}, acceptAction: {
                         
                         salirSplashView()
-                            
+                        
                     }).zIndex(1)
                 }
-                
             }
             
             .navigationDestination(isPresented: Binding(
@@ -156,151 +150,101 @@ struct PrincipalView: View {
                 datosCargados = true
             }
         }
-        .toast(isPresenting: $showToastBool, duration: 3, tapToDismiss: false) {
-            customToast
+        .onReceive(viewModel.$loadingSpinner) { loading in
+            openLoadingSpinner = loading
         }
+        .toast(isPresenting: $toastViewModel.showToastBool, alert: {
+            toastViewModel.customToast
+        })
+        
     }
     
     
     //*** FUNCIONES ****
     
     func salirSplashView(){
-        
         idToken = ""
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             if let window = windowScene.windows.first {
-                window.rootViewController = UIHostingController(rootView: SplashScreenView().preferredColorScheme(.light))
+                window.rootViewController = UIHostingController(rootView: SplashScreenView().preferredColorScheme(.light) )
                 window.makeKeyAndVisible()
             }
         }
     }
-  
+    
     func serverPrincipal(){
         
         openLoadingSpinner = true
         
-        let encodeURL = apiPrincipal
-        
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(idToken)"
-        ]
-        
-        let parameters: [String: Any] = [
-            "iduser": 0
-        ]
-        
-        Observable<Void>.create { observer in
-            let request = AF.request(encodeURL, method: .post, parameters: parameters, headers: headers)
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
+        viewModel.principalRX(idToken: idToken) { result in
+            switch result {
+            case .success(let json):
+                let success = json["success"].int ?? 0
+                switch success {
+                case 1:
+                    // numero bloqueado
+                    popNumeroBloqueado = true
+                case 2:
+                    let _codeiphone = json["versionios"].string ?? ""
+                    let _modalios = json["modalios"].int ?? 0
+                    
+                    // verificar si hay actualizacion
+                    if _modalios == 1{
+                        if _codeiphone != appVersion {
+                            popNuevaActualizacion = true
+                        }
+                    }
+                    
+                    json["slider"].array?.forEach({ (dataArray) in
                         
-                        let json = JSON(data)
-                        openLoadingSpinner = false
+                        let _id = dataArray["id"].int ?? 0
+                        let _imagen = dataArray["imagen"].string ?? ""
                         
-                        if let successValue = json["success"].int {
+                        let _array = ModeloSlider(id: _id, imagen: _imagen)
+                        
+                        itemsSlider.append(_array)
+                    })
+                    
+                    json["tiposervicio"].array?.forEach({ (dataArray) in
+                        
+                        let _id = dataArray["id"].int ?? 0
+                        let _nombre = dataArray["nombre"].string ?? ""
+                        
+                        dataArray["lista"].array?.forEach { (listaItem) in
+                            let _id2 = listaItem["id"].int ?? 0
+                            let _idcateservicio = listaItem["id_cateservicio"].int ?? 0
+                            let _tiposervicio = listaItem["tiposervicio"].int ?? 0
+                            let _nombre = listaItem["nombre"].string ?? ""
+                            let _imagen = listaItem["imagen"].string ?? ""
+                            let _descripcion = listaItem["descripcion"].string ?? ""
                             
-                            if(successValue == 1){
-                                // El usuario esta bloqueado
-                               
-                                popNumeroBloqueado = true
-                            }
-                            else if (successValue == 2){
-                                let _codeiphone = json["codeiphone"].int ?? 0
-                                
-                                // verificar si hay actualizacion
-                                if !appBuild.isEmpty {
-                                    if _codeiphone != Int(appBuild) {
-                                        popNuevaActualizacion = true
-                                    }
-                                }
-                                                                
-                                json["slider"].array?.forEach({ (dataArray) in
-                                    
-                                    let _id = dataArray["id"].int ?? 0
-                                    let _imagen = dataArray["imagen"].string ?? ""
-                                    
-                                    let _array = ModeloSlider(id: _id, imagen: _imagen)
-                                    
-                                    itemsSlider.append(_array)
-                                })
-                                
-                                
-                                json["tiposervicio"].array?.forEach({ (dataArray) in
-                                    
-                                    let _id = dataArray["id"].int ?? 0
-                                    let _nombre = dataArray["nombre"].string ?? ""
-                                    
-                                    
-                                    dataArray["lista"].array?.forEach { (listaItem) in
-                                        let _id2 = listaItem["id"].int ?? 0
-                                        let _idcateservicio = listaItem["id_cateservicio"].int ?? 0
-                                        let _tiposervicio = listaItem["tiposervicio"].int ?? 0
-                                        let _nombre = listaItem["nombre"].string ?? ""
-                                        let _imagen = listaItem["imagen"].string ?? ""
-                                        let _descripcion = listaItem["descripcion"].string ?? ""
-                                        
-                                        let _arrayTipoServicio = ModeloTipoServicio(id: _id2, id_cateservicio: _idcateservicio, tiposervicio: _tiposervicio, nombre: _nombre, imagen: _imagen, descripcion: _descripcion)
-                                        
-                                        itemsTipoServicio.append(_arrayTipoServicio)
-                                    }
-                                    
-                                    let _arrayTipoServicioArray = ModeloTipoServicioArray(id: _id, nombre: _nombre, lista: itemsTipoServicio)
-                                    
-                                    itemsTipoServicioArray.append(_arrayTipoServicioArray)
-                                    itemsTipoServicio.removeAll()
-                                })
-                                
-                                pantallaCargada = true
-                            }
-                            else{
-                                showCustomToast(with: "Error")
-                            }
+                            let _arrayTipoServicio = ModeloTipoServicio(id: _id2, id_cateservicio: _idcateservicio, tiposervicio: _tiposervicio, nombre: _nombre, imagen: _imagen, descripcion: _descripcion)
                             
-                        }else{
-                            showCustomToast(with: "Error")
+                            itemsTipoServicio.append(_arrayTipoServicio)
                         }
                         
-                    case .failure(_):
-                        openLoadingSpinner = false
-                        showCustomToast(with: "Error")
-                    }
+                        let _arrayTipoServicioArray = ModeloTipoServicioArray(id: _id, nombre: _nombre, lista: itemsTipoServicio)
+                        
+                        itemsTipoServicioArray.append(_arrayTipoServicioArray)
+                        itemsTipoServicio.removeAll()
+                    })
+                    
+                    pantallaCargada = true
+                    
+                default:
+                    mensajeError()
                 }
-            
-            return Disposables.create {
-                request.cancel()
+                
+            case .failure(_):
+                mensajeError()
             }
         }
-        .retry() // Retry indefinitely
-        .subscribe(onNext: {
-            // Hacer algo cuando la solicitud tenga éxito
-            
-        }, onError: { error in
-            // Manejar el error de la solicitud
-            openLoadingSpinner = false
-            showCustomToast(with: "Error")
-        })
-        .disposed(by: disposeBag)
     }
     
     
-    // Función para configurar y mostrar el toast
-    func showCustomToast(with mensaje: String) {
-        customToast = AlertToast(
-            displayMode: .banner(.pop),
-            type: .regular,
-            title: mensaje,
-            subTitle: nil,
-            style: .style(
-                backgroundColor: Color("ColorAzulToast"),
-                titleColor: Color.white,
-                subTitleColor: Color.blue,
-                titleFont: .headline,
-                subTitleFont: nil
-            )
-        )
-        showToastBool = true
+    func mensajeError(){
+        toastViewModel.showCustomToast(with: "Error, intentar de nuevo", tipoColor: .gris)
     }
 }
 
@@ -333,7 +277,7 @@ struct ContenidoServicios:View {
                     .foregroundColor(Color.gray)
                     .background(Color.white)
                     .padding(.top) // Opcional: Ajusta el padding según sea necesario
-                                
+                
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(servicioArray.lista, id: \.id) { servicio in
                         
@@ -380,7 +324,7 @@ struct ContenidoServicios:View {
             }
             else if _tiposervicio == 3 {
                 // REDIRECCIONAR A DENUNCIA
-                openWhatsApp(with: "50375825072")
+                openWhatsApp(with: "50369886392")
             }
             else if _tiposervicio == 4 {
                 // CATASTRO
@@ -394,17 +338,17 @@ struct ContenidoServicios:View {
     
     
     func openWhatsApp(with phoneNumber: String) {
-            let urlWhatsApp = "https://wa.me/\(phoneNumber)"
-            
-            if let urlString = urlWhatsApp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-               let url = URL(string: urlString) {
-                if UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                } else {
-                    print("No se puede abrir WhatsApp")
-                }
+        let urlWhatsApp = "https://wa.me/\(phoneNumber)"
+        
+        if let urlString = urlWhatsApp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+           let url = URL(string: urlString) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                print("No se puede abrir WhatsApp")
             }
         }
+    }
     
 }
 
@@ -421,13 +365,14 @@ struct ImageSliderView: View {
     var body: some View {
         TabView(selection: $currentIndex) {
             ForEach(images.indices, id: \.self) { index in
-                          
+                
                 WebImage(url: URL(string: base + images[index].imagen))
                     .resizable()
                     .indicator(.activity)
-                    .scaledToFill()
+                    .scaledToFit()
                     .tag(index)
                     .frame(maxWidth: .infinity, maxHeight: 250)
+                
             }
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
@@ -469,13 +414,3 @@ struct ContenedorShimmer: View {
         .padding(.top,40)
     }
 }
-
-
-
-
-/*
-#Preview {
-    return PrincipalView()
-}*/
-
-

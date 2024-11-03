@@ -70,7 +70,7 @@ struct PopImg2BtnView: View {
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color("cazulv1"))
+                            .background(AppColors.ColorAzulGob)
                             .cornerRadius(8)
                     }.buttonStyle(NoOpacityChangeButtonStyle())
                 }

@@ -12,7 +12,8 @@ struct NorteGoApp: App {
       
     var body: some Scene {
         WindowGroup {
-            SplashScreenView().preferredColorScheme(.light)
+            SplashScreenView()
+                .preferredColorScheme(.light) 
         }
     }
 }

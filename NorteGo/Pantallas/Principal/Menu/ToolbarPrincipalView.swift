@@ -19,7 +19,7 @@ struct ToolbarPrincipalView: View {
                 }){
                     Image(systemName: "line.horizontal.3")
                         .font(.system(size: 24))
-                        .foregroundColor(Color.blue)
+                        .foregroundColor(.black)
                 }
                 
                 Spacer(minLength: 0)

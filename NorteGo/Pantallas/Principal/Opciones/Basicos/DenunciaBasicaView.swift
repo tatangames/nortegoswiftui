@@ -14,10 +14,11 @@ import AlertToast
 
 struct DenunciaBasicaView: View {
     @Environment(\.presentationMode) var presentationMode
+    @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
+    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente: String = ""
     
     @State var idServicio: Int = 0
     @State var tituloVista: String = ""
-    
     @State private var showToastBool:Bool = false
     @State private var selectedImage:UIImage?
     @State private var selectedItem:PhotosPickerItem? = nil
@@ -26,12 +27,12 @@ struct DenunciaBasicaView: View {
     @State private var isCameraPresented:Bool = false
     @State private var sheetCamaraGaleria:Bool = false
     @State private var notaOpcional:String = ""
-    @State private var actualizaraImagen:Bool = false
     @State private var openLoadingSpinner:Bool = false
     @State private var latitudFinal:String = ""
     @State private var longitudFinal:String = ""
     @State private var popRangoDenunciaPendiente:Bool = false
     @State private var popDatosEnviados:Bool = false
+    @StateObject private var toastViewModel = ToastViewModel()
     
     // cuando una solicitud esta pendiente en un rango segun server
     @State private var tituloRango: String = ""
@@ -40,20 +41,14 @@ struct DenunciaBasicaView: View {
     
     // GPS
     @StateObject private var locationManager = LocationManager()
-    
-    @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
-    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente: String = ""
-    
-    // Variable para almacenar el contenido del toast
-    @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
-    
+    @StateObject var viewModel = DenunciaBasicaViewModel()
     
     var body: some View {
         
         ZStack {
             ScrollView {
                 VStack(spacing: 15) {
-                           
+                    
                     if !descripcion.isEmpty {
                         HStack {
                             Text(descripcion)
@@ -87,7 +82,7 @@ struct DenunciaBasicaView: View {
                         }
                     }
                     .padding(.top, 20)
-                                        
+                    
                     // Alinea el texto a la izquierda
                     HStack {
                         Text("Nota (Opcional)")
@@ -110,7 +105,7 @@ struct DenunciaBasicaView: View {
                             .frame(height: 1) // Altura de la línea
                             .foregroundColor(.gray) // Color de la línea
                     }
-                                        
+                    
                     Button(action: { // btn verificar
                         serverSubirInformacion()
                     }) {
@@ -119,7 +114,7 @@ struct DenunciaBasicaView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color("cazulv1"))
+                            .background(AppColors.ColorAzulGob)
                             .cornerRadius(32)
                     }
                     .padding(.top, 50)
@@ -128,7 +123,7 @@ struct DenunciaBasicaView: View {
                     
                     Spacer()
                 }
-                                
+                
                 .padding()
                 .photosPicker(isPresented: $isPickerPresented, selection: $selectedItem, matching: .images)
                 
@@ -139,7 +134,6 @@ struct DenunciaBasicaView: View {
                             case .success(let data):
                                 if let data = data, let image = UIImage(data: data) {
                                     selectedImage = image
-                                    actualizaraImagen = true
                                 }
                             case .failure(let error):
                                 print("Error loading image: \(error.localizedDescription)")
@@ -150,6 +144,7 @@ struct DenunciaBasicaView: View {
                 
                 .navigationTitle(tituloVista)
                 .navigationBarBackButtonHidden(true)
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button(action: {
@@ -157,7 +152,9 @@ struct DenunciaBasicaView: View {
                         }) {
                             HStack {
                                 Image(systemName: "arrow.left") // Ícono personalizado
+                                    .foregroundColor(.black)
                                 Text("Atras") // Texto personalizado
+                                    .foregroundColor(.black)
                             }
                         }
                     }
@@ -188,11 +185,12 @@ struct DenunciaBasicaView: View {
             // Pop-up numero bloqueado
             if popRangoDenunciaPendiente {
                 PopImg1BtnView(isActive: $popRangoDenunciaPendiente, imagen: .constant("infocolor"), bLlevaTitulo: .constant(true), titulo: $tituloRango, descripcion: $mensajeRango, txtAceptar: .constant("Aceptar"), acceptAction: {
-                                 
+                    
                 })
-                    .zIndex(1)
+                .zIndex(1)
             }
             
+            // pop datos enviados
             if popDatosEnviados {
                 PopImg1BtnView(isActive: $popDatosEnviados, imagen: .constant("infocolor"), bLlevaTitulo: .constant(true), titulo: .constant("Enviado"), descripcion: .constant("Puede verificar la solicitud en el Menu, opción Solicitudes"), txtAceptar: .constant("Aceptar"), acceptAction: {
                     
@@ -202,7 +200,7 @@ struct DenunciaBasicaView: View {
         }
         .sheet(isPresented: $sheetCamaraGaleria) {
             BottomSheetCamaraGaleriaView(onOptionSelected: { option in
-                              
+                
                 if option == 1{
                     checkPhotoLibraryPermission()
                 }else{
@@ -215,9 +213,9 @@ struct DenunciaBasicaView: View {
         .sheet(isPresented: $isCameraPresented) {
             ImagePicker(sourceType: .camera, selectedImage: $selectedImage)
                 .onChange(of: selectedImage) { newImage in
-                    if newImage != nil {
-                        actualizaraImagen = true
-                    }
+                    /* if newImage != nil {
+                     
+                     }*/
                 }
         }
         .alert(isPresented: $showSettingsAlert) {
@@ -233,120 +231,60 @@ struct DenunciaBasicaView: View {
                 }
             )
         }
-        .toast(isPresenting: $showToastBool, duration: 3, tapToDismiss: false) {
-            customToast
+        .onReceive(viewModel.$loadingSpinner) { loading in
+            openLoadingSpinner = loading
         }
-       
+        .toast(isPresenting: $toastViewModel.showToastBool, alert: {
+            toastViewModel.customToast
+        })
+        
     } // end-body
     
     
- 
+    
     func serverSubirInformacion() {
-                
+        
         locationManager.getLocation()
         
         guard let image = selectedImage else {
-            showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
+            toastViewModel.showCustomToast(with: "Seleccionar Imagen", tipoColor: .gris)
             return
         }
-                
-        if actualizaraImagen {
-            
-            openLoadingSpinner = true
 
-            let encodeURL = apiEnviarDatosDenuncia
-            
-            let parameters: [String: Any] = [
-                "iduser": idCliente,
-                "idservicio": idServicio,
-                "nota": notaOpcional,
-                "latitud": latitudFinal,
-                "longitud": longitudFinal
-            ]
-                   
-            let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(idToken)"
-            ]
-         
-            AF.upload(multipartFormData: { multipartFormData in
-                if let imageData = image.jpegData(compressionQuality: 0.5) {
-                    multipartFormData.append(imageData, withName: "imagen", fileName: "imagen.jpg", mimeType: "image/jpeg")
-                }
-                for (key, value) in parameters {
-                    if let data = "\(value)".data(using: .utf8) {
-                        multipartFormData.append(data, withName: key)
-                    }
-                }
-            }, to: encodeURL, method: .post, headers: headers)
-            .responseData { response in
-                switch response.result {
-                case .success(let data):
-                  
-                    openLoadingSpinner = false
+        viewModel.enviarDenunciaBasicaRX(idToken: idToken, idCliente: idCliente, idServicio: idServicio, nota: notaOpcional, latitud: latitudFinal, longitud: longitudFinal, selectedImage: selectedImage){ result in
+            switch result {
+                
+            case .success(let json):
+                let success = json["success"].int ?? 0
+                switch success {
+                case 1:
+                    // HAY SOLICITUD ACTIVA, Y ESTA DENTRO DEL RANGO x METROS
+                    let _titulo = json["titulo"].string ?? ""
+                    let _mensaje = json["mensaje"].string ?? ""
                     
-                    let json = JSON(data)
-                    if let successValue = json["success"].int {
-                        if successValue == 1 {
-                            // HAY SOLICITUD ACTIVA, Y ESTA DENTRO DEL RANGO 20 METROS
-                            let _titulo = json["titulo"].string ?? ""
-                            let _mensaje = json["mensaje"].string ?? ""
-                            
-                            tituloRango = _titulo
-                            mensajeRango = _mensaje
-                            
-                            popRangoDenunciaPendiente = true
-                            
-                        } else if successValue == 2 {
-                           // DATOS GUARDADOS
-                            showCustomToast(with: "Información Enviada", tipoColor: 2)
-                            selectedImage = nil
-                            actualizaraImagen = false
-                            notaOpcional = ""                            
-                            popDatosEnviados = true
-                            
-                        } else {
-                            showCustomToast(with: "Error", tipoColor: 1)
-                        }
-                    } else {
-                        showCustomToast(with: "Error", tipoColor: 1)
-                    }
-                case .failure(_):
-                    openLoadingSpinner = false
-                    showCustomToast(with: "Error", tipoColor: 1)
+                    tituloRango = _titulo
+                    mensajeRango = _mensaje
+                    popRangoDenunciaPendiente = true
+                case 2:
+                    toastViewModel.showCustomToast(with: "Solicitud recibida", tipoColor: .verde)
+                    selectedImage = nil
+                    notaOpcional = ""
+                    popDatosEnviados = true
+                default:
+                    mensajeError()
                 }
+                
+            case .failure(_):
+                mensajeError()
             }
-        } else {
-            showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
         }
     }
     
-    // Función para configurar y mostrar el toast
-    func showCustomToast(with mensaje: String, tipoColor: Int) {
-        
-        let titleColor: Color
-        
-        if tipoColor == 1 {
-            titleColor = Color("ColorAzulToast")
-        } else {
-            titleColor = Color("cverde")
-        }
-        
-        customToast = AlertToast(
-               displayMode: .banner(.pop),
-               type: .regular,
-               title: mensaje,
-               subTitle: nil,
-               style: .style(
-                   backgroundColor: titleColor,
-                   titleColor: Color.white,
-                   subTitleColor: Color.blue,
-                   titleFont: .headline,
-                   subTitleFont: nil
-               )
-           )
-           showToastBool = true
+    
+    func mensajeError(){
+        toastViewModel.showCustomToast(with: "Error, intentar de nuevo", tipoColor: .gris)
     }
-     
+    
     
     // verificar permiso para galeria
     func checkPhotoLibraryPermission() {
@@ -371,7 +309,7 @@ struct DenunciaBasicaView: View {
         case .limited:
             showSettingsAlert = true
         @unknown default:
-           // print("Estado desconocido")
+            // print("Estado desconocido")
             showSettingsAlert = true
         }
     }

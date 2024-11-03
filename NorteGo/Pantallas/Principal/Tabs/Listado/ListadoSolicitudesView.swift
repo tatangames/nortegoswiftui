@@ -14,27 +14,24 @@ import SDWebImageSwiftUI
 
 struct ListadoSolicitudesView: View {
     @Environment(\.presentationMode) var presentationMode
+    @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
+    
     @State private var openLoadingSpinner:Bool = true
     @State private var showToastBool:Bool = false
     @State var itemsListado: [ModeloListadoSolicitudes] = []
-    @State private var popOcultarLista: Bool = false
     @State private var pantallaCargada: Bool = false
     @State private var boolNoHayDatos: Bool = false
     @State private var popPreguntarOcultar: Bool = false
     @State private var idFilaTipoSolicitud: Int = 0
     @State private var idFilaSolicitud: Int = 0
-    
-    @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
+    @StateObject private var toastViewModel = ToastViewModel()
+    @StateObject var viewModelOcultar = ListadoSolicitudesOcultarViewModel()
+    @StateObject var viewModel = ListadoSolicitudesViewModel()
     
     let disposeBag = DisposeBag()
-    
-    // Variable para almacenar el contenido del toast
-    @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
-    
    
     var body: some View {
         VStack {
-            
             ZStack(alignment: Alignment(horizontal: .leading, vertical: .center)) {
                 
                     VStack(spacing: 0) {
@@ -53,21 +50,21 @@ struct ListadoSolicitudesView: View {
                                     }
                                     
                                     // SOLICITUD TALA ARBOL
-                                    if _servicio.tipo == 2 {
+                                    else if _servicio.tipo == 2 {
                                         CardViewSolicitudTalaArbol(nombretipo: _servicio.nombretipo, estado: _servicio.estado, nota: _servicio.nota, fecha: _servicio.fecha, nombre: _servicio.nombre, telefono: _servicio.telefono, direccion: _servicio.direccion, escritura: _servicio.escritura, imagen: _servicio.imagen, onTap: {
                                             abrirPopOcultar(_idfilaSolicitud: _servicio.id, _idfilaTipoSolicitud: _servicio.tipo)
                                         })
                                     }
                                     
                                     // DENUNCIA TALA DE ARBOL
-                                    if _servicio.tipo == 3 {
+                                    else if _servicio.tipo == 3 {
                                         CardViewDenunciaTalaArbol(nombretipo: _servicio.nombretipo, estado: _servicio.estado, nota: _servicio.nota, fecha: _servicio.fecha, imagen: _servicio.imagen, onTap: {
                                             abrirPopOcultar(_idfilaSolicitud: _servicio.id, _idfilaTipoSolicitud: _servicio.tipo)
                                         })
                                     }
                                     
                                     // CATASTRO
-                                    if _servicio.tipo == 4 {
+                                    else if _servicio.tipo == 4 {
                                         CardViewSolicitudCatastro(nombretipo: _servicio.nombretipo, estado: _servicio.estado, fecha: _servicio.fecha, nombre: _servicio.nombre, dui: _servicio.dui, onTap: {
                                             abrirPopOcultar(_idfilaSolicitud: _servicio.id, _idfilaTipoSolicitud: _servicio.tipo)
                                         })
@@ -96,13 +93,7 @@ struct ListadoSolicitudesView: View {
                         .transition(.opacity) // Transición de opacidad
                         .zIndex(10)
                 }
-                
-                // Pop-up numero bloqueado
-                if popOcultarLista {
-                    PopImg2BtnView(isActive: $popOcultarLista, imagen: .constant("infocolor"), descripcion: .constant("Hay una nueva versión disponible. ¿Desea actualizar ahora?"), txtCancelar: .constant("No"), txtAceptar: .constant("Actualizar"), cancelAction: {}, acceptAction: {
-                        
-                    }).zIndex(1)
-                }
+      
                 
                 // preguntar si quiere ocultar solicitud
                 if popPreguntarOcultar {
@@ -116,22 +107,33 @@ struct ListadoSolicitudesView: View {
         }
         .navigationTitle("Solicitudes")
         .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
-                    presentationMode.wrappedValue.dismiss() // Regresa a la pantalla anterior
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     HStack {
-                        Image(systemName: "arrow.left") // Ícono personalizado
-                        Text("Atras") // Texto personalizado
+                        Image(systemName: "arrow.left")
+                            .foregroundColor(.black)
+                        
+                        Text("Atras")
+                            .foregroundColor(.black)
                     }
-                }
+                }           
             }
         }
+        .onReceive(viewModel.$loadingSpinner) { loading in
+            openLoadingSpinner = loading
+        }
+        .onReceive(viewModelOcultar.$loadingSpinner) { loading in
+            openLoadingSpinner = loading
+        }
+        .toast(isPresenting: $toastViewModel.showToastBool, alert: {
+            toastViewModel.customToast
+        })
     }
-    
-    
-    // ** FUNCIONES **
+      
     
     func abrirPopOcultar(_idfilaSolicitud: Int, _idfilaTipoSolicitud: Int){
         idFilaSolicitud = _idfilaSolicitud
@@ -140,176 +142,85 @@ struct ListadoSolicitudesView: View {
     }
     
     func serverListado(){
-        
         itemsListado.removeAll()
         openLoadingSpinner = true
         pantallaCargada = false
         
-        let encodeURL = apiListadoSolicitudes
-        
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(idToken)"
-        ]
-        
-        let parameters: [String: Any] = [
-            "iduser": 0
-        ]
-        
-        Observable<Void>.create { observer in
-            let request = AF.request(encodeURL, method: .post, parameters: parameters, headers: headers)
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
-                        
-                        let json = JSON(data)
-                        openLoadingSpinner = false
-                        
+        viewModel.misSolicitudesRX(idToken: idToken, idcliente: 2) { result in
+            switch result {
+            case .success(let json):
+                let success = json["success"].int ?? 0
+                switch success {
+                case 1:
+              
+                    let _haydatos = json["haydatos"].int ?? 0
+                     
+                     if _haydatos == 1 {
+                         json["listado"].array?.forEach({ (dataArray) in
+                             
+                             let _id = dataArray["id"].int ?? 0
+                             let _tipo = dataArray["tipo"].int ?? 0
+                             let _nombretipo = dataArray["nombretipo"].string ?? ""
+                             let _estado = dataArray["estado"].string ?? ""
+                             let _nota = dataArray["nota"].string ?? ""
+                             let _fecha = dataArray["fecha"].string ?? ""
+                             let _nombre = dataArray["nombre"].string ?? ""
+                             let _telefono = dataArray["telefono"].string ?? ""
+                             let _direccion = dataArray["direccion"].string ?? ""
+                             let _escritura = dataArray["escritura"].int ?? 0
+                             let _dui = dataArray["dui"].string ?? ""
+                             let _imagen = dataArray["imagen"].string ?? ""
+                             
+                             let _array = ModeloListadoSolicitudes(id: _id, tipo: _tipo, nombretipo: _nombretipo, estado: _estado, nota: _nota, fecha: _fecha, nombre: _nombre, telefono: _telefono, direccion: _direccion, escritura: _escritura, dui: _dui, imagen: _imagen)
+                                                                 
+                             itemsListado.append(_array)
+                         })
                        
-                        if let successValue = json["success"].int {
-                                                       
-                             if (successValue == 1){
-                                let _haydatos = json["haydatos"].int ?? 0
-                                 
-                                 if _haydatos == 1 {
-                                     json["listado"].array?.forEach({ (dataArray) in
-                                         
-                                         let _id = dataArray["id"].int ?? 0
-                                         let _tipo = dataArray["tipo"].int ?? 0
-                                         let _nombretipo = dataArray["nombretipo"].string ?? ""
-                                         let _estado = dataArray["estado"].string ?? ""
-                                         let _nota = dataArray["nota"].string ?? ""
-                                         let _fecha = dataArray["fecha"].string ?? ""
-                                         let _nombre = dataArray["nombre"].string ?? ""
-                                         let _telefono = dataArray["telefono"].string ?? ""
-                                         let _direccion = dataArray["direccion"].string ?? ""
-                                         let _escritura = dataArray["escritura"].int ?? 0
-                                         let _dui = dataArray["dui"].string ?? ""
-                                         let _imagen = dataArray["imagen"].string ?? ""
-                                         
-                                         let _array = ModeloListadoSolicitudes(id: _id, tipo: _tipo, nombretipo: _nombretipo, estado: _estado, nota: _nota, fecha: _fecha, nombre: _nombre, telefono: _telefono, direccion: _direccion, escritura: _escritura, dui: _dui, imagen: _imagen)
-                                                                             
-                                         itemsListado.append(_array)
-                                     })
-                                   
-                                      pantallaCargada = true
-                                 }else{
-                                     pantallaCargada = false
-                                     boolNoHayDatos = true
-                                 }
-                              
-                            }
-                            else{
-                                showCustomToast(with: "Error")
-                            }
-                            
-                        }else{
-                            showCustomToast(with: "Error")
-                        }
-                        
-                    case .failure(_):
-                        openLoadingSpinner = false
-                        showCustomToast(with: "Error")
-                    }
+                          pantallaCargada = true
+                     }else{
+                         pantallaCargada = false
+                         boolNoHayDatos = true
+                     }
+                                        
+                default:
+                    mensajeError()
                 }
-            
-            return Disposables.create {
-                request.cancel()
+                
+            case .failure(_):
+                mensajeError()
             }
         }
-        .retry() // Retry indefinitely
-        .subscribe(onNext: {
-            // Hacer algo cuando la solicitud tenga éxito
-            
-        }, onError: { error in
-            // Manejar el error de la solicitud
-            openLoadingSpinner = false
-            showCustomToast(with: "Error")
-        })
-        .disposed(by: disposeBag)
     }
     
     
     func serverOcultarSolicitud(){
-        
         openLoadingSpinner = true
-        
-        let encodeURL = apiSolicitudOcultar
-        
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(idToken)"
-        ]
-        
-        let parameters: [String: Any] = [
-            "id": idFilaSolicitud,
-            "tipo": idFilaTipoSolicitud
-        ]
-        
-        Observable<Void>.create { observer in
-            let request = AF.request(encodeURL, method: .post, parameters: parameters, headers: headers)
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
-                        
-                        let json = JSON(data)
-                                            
-                        
-                        if let successValue = json["success"].int {
-                            
-                            if (successValue == 1){
-                                // se oculto, hoy recargar datos
-                                idFilaSolicitud = 0
-                                idFilaTipoSolicitud = 0
-                                serverListado()
-                            }
-                            else{
-                                showCustomToast(with: "Error")
-                            }
-                            
-                        }else{
-                            showCustomToast(with: "Error")
-                        }
-                        
-                    case .failure(_):
-                        openLoadingSpinner = false
-                        showCustomToast(with: "Error")
-                    }
+        viewModelOcultar.ocultarSolicitudesRX(idToken: idToken, id: idFilaSolicitud, tipo: idFilaTipoSolicitud) { result in
+            switch result {
+            case .success(let json):
+                let success = json["success"].int ?? 0
+                switch success {
+                case 1:
+              
+                    idFilaSolicitud = 0
+                    idFilaTipoSolicitud = 0
+                    serverListado()
+                                        
+                default:
+                    mensajeError()
                 }
-            
-            return Disposables.create {
-                request.cancel()
+                
+            case .failure(_):
+                mensajeError()
             }
         }
-        .retry() // Retry indefinitely
-        .subscribe(onNext: {
-            // Hacer algo cuando la solicitud tenga éxito
-            
-        }, onError: { error in
-            // Manejar el error de la solicitud
-            openLoadingSpinner = false
-            showCustomToast(with: "Error")
-        })
-        .disposed(by: disposeBag)
     }
-        
     
-    // Función para configurar y mostrar el toast
-    func showCustomToast(with mensaje: String) {
-        customToast = AlertToast(
-            displayMode: .banner(.pop),
-            type: .regular,
-            title: mensaje,
-            subTitle: nil,
-            style: .style(
-                backgroundColor: Color("ColorAzulToast"),
-                titleColor: Color.white,
-                subTitleColor: Color.blue,
-                titleFont: .headline,
-                subTitleFont: nil
-            )
-        )
-        showToastBool = true
+    func mensajeError(){
+        toastViewModel.showCustomToast(with: "Error, intentar de nuevo", tipoColor: .gris)
     }
 }
+
 
 // CARDVIEW PARA DENUNCIAS BASICAS
 struct CardViewDenunciaBasica: View {
@@ -342,6 +253,7 @@ struct CardViewDenunciaBasica: View {
         }
     }
 }
+
 
 // CARDVIEW SOLICITUD TALA ARBOL
 struct CardViewSolicitudTalaArbol: View {
@@ -486,8 +398,6 @@ struct BloqueFilaSolicitud: View {
     }
 }
 
-
-
 struct CardViewNoHayDatos: View {
    
     var body: some View {
@@ -509,7 +419,3 @@ struct CardViewNoHayDatos: View {
     }
 }
 
-
-#Preview {
-    ListadoSolicitudesView()
-}

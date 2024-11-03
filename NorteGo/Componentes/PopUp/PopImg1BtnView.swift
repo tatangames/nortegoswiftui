@@ -65,7 +65,7 @@ struct PopImg1BtnView: View {
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color("cazulv1"))
+                            .background(AppColors.ColorAzulGob)
                             .cornerRadius(8)
                     }.padding(.top, 12)
                         .opacity(1.0)
@@ -82,10 +82,3 @@ struct PopImg1BtnView: View {
     }
 }
 
-
-
-#Preview {
-    PopImg1BtnView(isActive: .constant(true), imagen: .constant("infocolor"), bLlevaTitulo: .constant(false),
-                   titulo: .constant("Titulo"), descripcion: .constant("Ejemplo de descripcion de la aplicacion que se esta mostrando"), txtAceptar: .constant("Aceptar"),
-                   acceptAction: {})
-}

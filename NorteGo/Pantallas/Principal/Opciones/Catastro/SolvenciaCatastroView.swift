@@ -13,6 +13,8 @@ import AlertToast
 
 struct SolvenciaCatastroView: View {
     @Environment(\.presentationMode) var presentationMode
+    @AppStorage(DatosGuardadosKeys.idToken) private var idToken:String = ""
+    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente:String = ""
     
     @State var tituloVista:String = ""
     @State private var selectedOption:Int = 0
@@ -20,19 +22,15 @@ struct SolvenciaCatastroView: View {
     @State private var nombre:String = ""
     @State private var dui:String = ""
     @State private var openLoadingSpinner:Bool = false
-    @AppStorage(DatosGuardadosKeys.idToken) private var idToken:String = ""
-    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente:String = ""
     @State private var popDatosEnviados:Bool = false
-    
+    @StateObject var viewModel = SolvenciaCatastroViewModel()
     //GPS
     @State private var latitudFinal:String = ""
     @State private var longitudFinal:String = ""
     @StateObject private var locationManager = LocationManager()
+    @StateObject private var toastViewModel = ToastViewModel()
     
     let disposeBag = DisposeBag()
-    
-    // Variable para almacenar el contenido del toast
-    @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
     
     var body: some View {
         
@@ -69,8 +67,7 @@ struct SolvenciaCatastroView: View {
                             .frame(height: 1) // Altura de la línea
                             .foregroundColor(.gray) // Color de la línea
                     }
-                    
-                    
+                                        
                     // Alinea el texto a la izquierda
                     HStack {
                         Text("DUI")
@@ -93,8 +90,7 @@ struct SolvenciaCatastroView: View {
                             .frame(height: 1) // Altura de la línea
                             .foregroundColor(.gray) // Color de la línea
                     }
-                    
-                    
+                                        
                     Button(action: { // btn enviar datos
                         serverEnviarDatos()
                     }) {
@@ -103,7 +99,7 @@ struct SolvenciaCatastroView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color("cazulv1"))
+                            .background(AppColors.ColorAzulGob)
                             .cornerRadius(8)
                     }
                     .padding(.top, 50)
@@ -121,7 +117,9 @@ struct SolvenciaCatastroView: View {
                         }) {
                             HStack {
                                 Image(systemName: "arrow.left") // Ícono personalizado
+                                    .foregroundColor(.black)
                                 Text("Atras") // Texto personalizado
+                                    .foregroundColor(.black)
                             }
                         }
                     }
@@ -135,7 +133,6 @@ struct SolvenciaCatastroView: View {
                 .onAppear{
                     locationManager.getLocation()
                 }
-                
             }
             .onTapGesture {
                 hideKeyboard()
@@ -154,40 +151,17 @@ struct SolvenciaCatastroView: View {
                 .zIndex(1)
             }
         }
-        
-        .toast(isPresenting: $showToastBool, duration: 3, tapToDismiss: false) {
-            customToast
+        .onReceive(viewModel.$loadingSpinner) { loading in
+            openLoadingSpinner = loading
         }
+        .toast(isPresenting: $toastViewModel.showToastBool, alert: {
+            toastViewModel.customToast
+        })
     }
-    
-    
-    // Función para configurar y mostrar el toast
-    func showCustomToast(with mensaje: String, tipoColor: Int) {
         
-        let titleColor: Color
-        
-        if tipoColor == 1 {
-            titleColor = Color("ColorAzulToast")
-        } else {
-            titleColor = Color("cverde")
-        }
-        
-        customToast = AlertToast(
-            displayMode: .banner(.pop),
-            type: .regular,
-            title: mensaje,
-            subTitle: nil,
-            style: .style(
-                backgroundColor: titleColor,
-                titleColor: Color.white,
-                subTitleColor: Color.blue,
-                titleFont: .headline,
-                subTitleFont: nil
-            )
-        )
-        showToastBool = true
-    }
-    
+    func mensajeError(){
+        toastViewModel.showCustomToast(with: "Error, intentar de nuevo", tipoColor: .gris)
+    }        
     
     func serverEnviarDatos(){
         
@@ -195,86 +169,42 @@ struct SolvenciaCatastroView: View {
         locationManager.getLocation()
         
         if(selectedOption == 0){
-            showCustomToast(with: "Seleccionar Tipo Solvencia", tipoColor: 1)
+            toastViewModel.showCustomToast(with: "Seleccionar Tipo Solvencia", tipoColor: .gris)
             return
         }
         
         if nombre.isEmpty {
-            showCustomToast(with: "Nombre es requerido", tipoColor: 1)
+            toastViewModel.showCustomToast(with: "Nombre es requerido", tipoColor: .gris)
             return
         }
         
         if dui.isEmpty {
-            showCustomToast(with: "DUI es requerido", tipoColor: 1)
+            toastViewModel.showCustomToast(with: "DUI es requerido", tipoColor: .gris)
             return
         }
         
         openLoadingSpinner = true
-        
-        let encodeURL = apiEnviarDatosCatastro
-        
-        let parameters: [String: Any] = [
-            "id": idCliente,
-            "latitud": latitudFinal,
-            "longitud": longitudFinal,
-            "tiposoli": selectedOption,
-            "nombre": nombre,
-            "dui": dui
-        ]
-        
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(idToken)"
-        ]
-        
-        Observable<Void>.create { observer in
-            let request = AF.request(encodeURL, method: .post, parameters: parameters, headers: headers)
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
-                        
-                        openLoadingSpinner = false
-                        
-                        let json = JSON(data)
-                        
-                        if let successValue = json["success"].int {
-                            
-                            if(successValue == 1){
-                                
-                                // Datos enviados
-                                showCustomToast(with: "Datos Enviados", tipoColor: 2)
-                                selectedOption = 0
-                                nombre = ""
-                                dui = ""
-                                popDatosEnviados = true
-                                
-                            }
-                            else{
-                                showCustomToast(with: "Error", tipoColor: 1)
-                            }
-                            
-                        }else{
-                            showCustomToast(with: "Error", tipoColor: 1)
-                        }
-                        
-                    case .failure(_):
-                        openLoadingSpinner = false
-                        showCustomToast(with: "Error", tipoColor: 1)
-                    }
+        viewModel.solvenciaCatastroRX(idToken: idToken, idCliente: idCliente, latitud: latitudFinal, longitud: longitudFinal, tipoSoli: selectedOption, nombre: nombre, dui: dui){ result in
+            switch result {
+                
+            case .success(let json):
+                let success = json["success"].int ?? 0
+                switch success {
+                case 1:
+                    // Datos enviados
+                    toastViewModel.showCustomToast(with: "Datos Enviados", tipoColor: .verde)
+                    selectedOption = 0
+                    nombre = ""
+                    dui = ""
+                    popDatosEnviados = true
+                default:
+                    mensajeError()
                 }
-            
-            return Disposables.create {
-                request.cancel()
+                
+            case .failure(_):
+                mensajeError()
             }
         }
-        .retry() // Retry indefinitely
-        .subscribe(onNext: {
-            // Hacer algo cuando la solicitud tenga éxito
-            
-        }, onError: { error in
-            openLoadingSpinner = false
-            showCustomToast(with: "Error", tipoColor: 1)
-        })
-        .disposed(by: disposeBag)
     }
 }
 

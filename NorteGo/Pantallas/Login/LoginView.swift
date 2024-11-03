@@ -21,17 +21,11 @@ struct LoginView: View {
     @State private var popNumeroBloqueado: Bool = false
     @State private var openLoadingSpinner:Bool = false
     @State private var showToastBool:Bool = false
-    
-    //@State var vistaSeleccionada: AnyView? = nil
-    @State private var navigateToDetail = false
-    
+    @State private var boolCambiarVista = false
+    @State private var segundos = 60
+    @StateObject private var toastViewModel = ToastViewModel()
+    let viewModel = LoginViewModel()
     let disposeBag = DisposeBag()
-    
-    // INICIALIZADOR DE TOAST
-    @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
-    
-    // variables que recibo del servidor, defecto 60 segundos
-    @State private var _segundosiphone = 60
     
     var body: some View {
         NavigationStack {
@@ -48,7 +42,7 @@ struct LoginView: View {
                         Text("NorteGo")
                             .font(.custom("LiberationSans-Bold", size: 28))
                         
-                        // Phone Number Field with Prefix and Icon
+                       
                         HStack(spacing: 0) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 8)
@@ -90,13 +84,13 @@ struct LoginView: View {
                         Button(action: {
                             hideKeyboard()
                             verificarNumeroDeTelefono()
-                        }) {
-                            Text("INGRESAR")
+                            }) {
+                            Text("VERIFICAR")
                                 .font(.custom("LiberationSans-Bold", size: 17))
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(Color("cazulv1"))
+                                .background(AppColors.ColorAzulGob)
                                 .cornerRadius(32)
                         }
                         .padding(.horizontal)
@@ -126,6 +120,7 @@ struct LoginView: View {
                     .onDisappear {
                         NotificationCenter.default.removeObserver(self)
                     }
+                    
                 }.onTapGesture {
                     hideKeyboard()
                 } //end-scroll
@@ -145,7 +140,7 @@ struct LoginView: View {
                 
                 // Pop-up verificar numero de telefono
                 if popVerificar {
-                    PopImg2BtnView(isActive: $popVerificar, imagen: .constant("infocolor"), descripcion: .constant("Verificar el número de teléfono"), txtCancelar: .constant("Editar"), txtAceptar: .constant("Verificar"), cancelAction: {}, acceptAction: {
+                    PopImg2BtnView(isActive: $popVerificar, imagen: .constant("infocolor"), descripcion: .constant("¿El número \(phoneNumber) introducido es correcto?"), txtCancelar: .constant("Cancelar"), txtAceptar: .constant("Verificar"), cancelAction: {}, acceptAction: {
                         serverLogin()
                     }).zIndex(1)
                 }
@@ -162,48 +157,21 @@ struct LoginView: View {
                         .zIndex(10)
                 }
             } // end-zstack
-           /* .navigationDestination(isPresented: Binding(
-                get: { vistaSeleccionada != nil },
-                set: { _ in vistaSeleccionada = nil }
-            )) {
-                vistaSeleccionada
-            }*/
-            
-            .navigationDestination(isPresented: $navigateToDetail) {
-               // CodigoOtpView(initialTime: _segundosiphone, telefono: phoneNumber)
-                
-                
-                CodigoOtpView(telefono: phoneNumber, startValue: _segundosiphone)
+        
+            .navigationDestination(isPresented: $boolCambiarVista) {
+                CodigoOtpView(telefono: phoneNumber, startValue: segundos)
             }
-            
-            .toast(isPresenting: $showToastBool, duration: 3, tapToDismiss: false) {
-                customToast
+            .onReceive(viewModel.$loadingSpinner) { loading in
+                openLoadingSpinner = loading
             }
+            .background(Color.white)
+          
         } // end-navigationStack
+        .toast(isPresenting: $toastViewModel.showToastBool, alert: {
+            toastViewModel.customToast
+        })
     } // end-body
     
-    
-    // ** FUNCIONES **
-    
-    // Función para configurar y mostrar el toast
-    func showCustomToast(with mensaje: String) {
-        customToast = AlertToast(
-            displayMode: .banner(.pop),
-            type: .regular,
-            title: mensaje,
-            subTitle: nil,
-            style: .style(
-                backgroundColor: Color("ColorAzulToast"),
-                titleColor: Color.white,
-                subTitleColor: Color.blue,
-                titleFont: .headline,
-                subTitleFont: nil
-            )
-        )
-        
-        // Aquí mostrarías el toast
-        showToastBool = true
-    }
     
     func verificarNumeroDeTelefono() -> Void {
         if phoneNumber.isEmpty {
@@ -238,72 +206,48 @@ struct LoginView: View {
             start = end
         }
         return result
-    }
-    
+    }    
     
     func serverLogin(){
         
-        openLoadingSpinner = true
-        
-        let encodeURL = apiVerificarTelefono
-        
-        let parameters: [String: Any] = [
-            "telefono": phoneNumber,
-        ]
-        
-        Observable<Void>.create { observer in
-            let request = AF.request(encodeURL, method: .post, parameters: parameters)
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
+        viewModel.verificarTelefonoRX(telefono: phoneNumber)
+            .subscribe(onNext: { result in
+                switch result {
+                case .success(let json):
+                    let success = json["success"].int ?? 0
+                                        
+                    switch success {
+                    case 1:
+                        // numero bloqueado
+                        popNumeroBloqueado = true
+                    case 2:
+                       // error al enviar sms
+                        toastViewModel.showCustomToast(with: "Error enviar el SMS", tipoColor: .gris)
+                    case 3:
                         
-                        openLoadingSpinner = false
+                        let _segundos = json["segundos"].int ?? 0
+                        segundos = _segundos
                         
-                        let json = JSON(data)
-                        
-                        if let successValue = json["success"].int {
-                            
-                            if(successValue == 1){
-                                // usuario bloqueado
-                                popNumeroBloqueado = true
-                            }
-                            else if(successValue == 2){
-                                
-                                _segundosiphone = json["segundosiphone"].int ?? 0
-                                
-                                // PASAR A PANTALLA CODIGO NAVIGATION STACK
-                                navigateToDetail = true
-                            }
-                            else{
-                                showCustomToast(with: "Error")
-                            }
-                        }else{
-                            showCustomToast(with: "Error")
-                        }
-                    case .failure(_):
-                        openLoadingSpinner = false
-                        showCustomToast(with: "Error")
+                        // respuesta correcta
+                        boolCambiarVista = true
+                    case 100:
+                        // solo para desarrollo
+                        toastViewModel.showCustomToast(with: "Aplicación en Desarrollo", tipoColor: .gris)
+                    default:
+                       mensajeError()
                     }
+                    
+                case .failure(_):
+                    mensajeError()
                 }
-            
-            return Disposables.create {
-                request.cancel()
-            }
-        }
-        .retry() // Retry indefinitely
-        .subscribe(onNext: {
-            // Hacer algo cuando la solicitud tenga éxito
-            
-        }, onError: { error in
-            openLoadingSpinner = false
-            showCustomToast(with: "Error")
-        })
-        .disposed(by: disposeBag)
+            }, onError: { error in
+                mensajeError()
+            })
+            .disposed(by: viewModel.disposeBag)
     }
     
+    func mensajeError(){
+        toastViewModel.showCustomToast(with: "Error, intentar de nuevo", tipoColor: .gris)
+    }
     
 } // end-view
-
-#Preview {
-    LoginView()
-}

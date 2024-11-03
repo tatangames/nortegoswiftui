@@ -110,3 +110,37 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
     }
 }
+
+
+
+enum ToastColor {
+    case azul
+    case verde
+    case gris
+    case rojo
+    
+    var color: Color {
+        switch self {
+        case .azul:
+            return AppColors.ColorAzulGob
+        case .verde:
+            return AppColors.ColorVerde
+        case .gris:
+            return AppColors.ColorGris1Gob
+        case .rojo:
+            return AppColors.ColorRojo
+        }
+    }
+}
+
+
+
+extension Bundle {
+    var appVersion: String {
+        return infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A"
+    }
+
+    var buildNumber: String {
+        return infoDictionary?["CFBundleVersion"] as? String ?? "N/A"
+    }
+}

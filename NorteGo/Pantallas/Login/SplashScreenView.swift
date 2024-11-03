@@ -36,6 +36,7 @@ struct SplashScreenView: View {
                 PrincipalView()
             }
         }
+        .background(Color.white)
     } // end-body
 }
 

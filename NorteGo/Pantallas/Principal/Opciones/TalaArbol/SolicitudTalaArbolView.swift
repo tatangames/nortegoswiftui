@@ -14,18 +14,15 @@ import AlertToast
 
 struct SolicitudTalaArbolView: View {
     @Environment(\.presentationMode) var presentationMode
+    @AppStorage(DatosGuardadosKeys.idToken) private var idToken:String = ""
+    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente:String = ""
     
     @State var idServicio:Int = 0
     @State var tituloVista:String = ""
-    
     @State private var selectedOption:Int = 1
     @State private var openLoadingSpinner:Bool = false
-    @AppStorage(DatosGuardadosKeys.idToken) private var idToken:String = ""
-    @AppStorage(DatosGuardadosKeys.idCliente) private var idCliente:String = ""
-    let disposeBag = DisposeBag()
     @State private var showToastBool:Bool = false
     @State private var popDatosEnviados:Bool = false
-    
     //** OPCIONES PARA SOLICITUD TALA ARBOL
     @State private var NombreCompleto:String = ""
     @State private var Telefono:String = ""
@@ -33,22 +30,20 @@ struct SolicitudTalaArbolView: View {
     @State private var NotaOpcional:String = ""
     @State private var Escritura:Int = 0
     @State private var checkedEscritura:Bool = false
-    
     @State var selectedImage:UIImage?
     @State var selectedItem:PhotosPickerItem? = nil
     @State private var isPickerPresented:Bool = false
     @State private var showSettingsAlert:Bool = false
     @State private var isCameraPresented:Bool = false
     @State private var sheetCamaraGaleria:Bool = false
-    @State private var actualizaraImagen:Bool = false
-    
+    @StateObject private var toastViewModel = ToastViewModel()
+    @StateObject var viewModelSolicitud = SolicitudTalaViewModel()
+    @StateObject var viewModelDenuncia = DenunciaTalaViewModel()
     // GPS
     @State private var latitudFinal: String = ""
     @State private var longitudFinal: String = ""
     @StateObject private var locationManager = LocationManager()
-    
-    // Variable para almacenar el contenido del toast
-    @State private var customToast: AlertToast = AlertToast(displayMode: .banner(.slide), type: .regular, title: "", style: .style(backgroundColor: .clear, titleColor: .white, subTitleColor: .blue, titleFont: .headline, subTitleFont: nil))
+    let disposeBag = DisposeBag()
     
     var body: some View {
         
@@ -109,7 +104,7 @@ struct SolicitudTalaArbolView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color("cazulv1"))
+                            .background(AppColors.ColorAzulGob)
                             .cornerRadius(32)
                     }
                     .padding(.top, 60)
@@ -128,7 +123,7 @@ struct SolicitudTalaArbolView: View {
                             case .success(let data):
                                 if let data = data, let image = UIImage(data: data) {
                                     selectedImage = image
-                                    actualizaraImagen = true
+                                    
                                 }
                             case .failure(let error):
                                 print("Error loading image: \(error.localizedDescription)")
@@ -144,13 +139,15 @@ struct SolicitudTalaArbolView: View {
                             presentationMode.wrappedValue.dismiss() // Regresa a la pantalla anterior
                         }) {
                             HStack {
-                                Image(systemName: "arrow.left") // Ícono personalizado
-                                Text("Atras") // Texto personalizado
+                                Image(systemName: "arrow.left")
+                                    .foregroundColor(.black)// Ícono personalizado
+                                Text("Atras")
+                                    .foregroundColor(.black)// Texto personalizado
                             }
                         }
                     }
                 }
-            
+                
                 .onReceive(locationManager.$location) { newLocation in
                     if let location = newLocation {
                         latitudFinal = String(location.latitude)
@@ -164,7 +161,7 @@ struct SolicitudTalaArbolView: View {
             .onTapGesture {
                 hideKeyboard()
             }
-                        
+            
             if openLoadingSpinner {
                 LoadingSpinnerView()
                     .transition(.opacity) // Transición de opacidad
@@ -193,9 +190,9 @@ struct SolicitudTalaArbolView: View {
         .sheet(isPresented: $isCameraPresented) {
             ImagePicker(sourceType: .camera, selectedImage: $selectedImage)
                 .onChange(of: selectedImage) { newImage in
-                    if newImage != nil {
-                        actualizaraImagen = true
-                    }
+                    /* if newImage != nil {
+                     actualizaraImagen = true
+                     }*/
                 }
         }
         .alert(isPresented: $showSettingsAlert) {
@@ -208,110 +205,76 @@ struct SolicitudTalaArbolView: View {
                     }
                 },
                 secondaryButton: .default(Text("Cancelar")) {
-                    
                 }
             )
         }
-        .toast(isPresenting: $showToastBool, duration: 3, tapToDismiss: false) {
-            customToast
+        .onReceive(viewModelSolicitud.$loadingSpinner) { loading in
+            openLoadingSpinner = loading
         }
+        .onReceive(viewModelDenuncia.$loadingSpinner) { loading in
+            openLoadingSpinner = loading
+        }
+        .toast(isPresenting: $toastViewModel.showToastBool, alert: {
+            toastViewModel.customToast
+        })
     }
     
+    func mensajeError(){
+        toastViewModel.showCustomToast(with: "Error, intentar de nuevo", tipoColor: .gris)
+    }
     
     func serverSolicitudTalaArbol(){
         
-      //  locationManager.requestLocation()
-        
         if NombreCompleto.isEmpty {
-            showCustomToast(with: "Nombre es requerido", tipoColor: 1)
+            toastViewModel.showCustomToast(with: "Nombre es requerido", tipoColor: .gris)
             return
         }
         
         if Telefono.isEmpty {
-            showCustomToast(with: "Teléfono es requerido", tipoColor: 1)
+            toastViewModel.showCustomToast(with: "Teléfono es requerido", tipoColor: .gris)
             return
         }
         
         if Direccion.isEmpty {
-            showCustomToast(with: "Dirección es requerido", tipoColor: 1)
+            toastViewModel.showCustomToast(with: "Dirección es requerido", tipoColor: .gris)
             return
         }
         
         guard let image = selectedImage else {
-            showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
+            toastViewModel.showCustomToast(with: "Seleccionar Imagen", tipoColor: .gris)
             return
         }
+        
+        openLoadingSpinner = true
+        
+        var valorEscritura = 0
+        if(checkedEscritura){
+            valorEscritura = 1
+        }
+        
+        viewModelSolicitud.enviarSolicitudTalaRX(idToken: idToken, idCliente: idCliente, nombre: NombreCompleto, telefono: Telefono, direccion: Direccion, escritura: valorEscritura, nota: NotaOpcional, latitud: latitudFinal, longitud: longitudFinal, selectedImage: selectedImage){ result in
+            switch result {
                 
-        if actualizaraImagen {
-            
-            openLoadingSpinner = true
-            
-            let encodeURL = apiEnviarDatosSolitudTalaArbol
-            
-            var valorEscritura = 0
-            if(checkedEscritura){
-                valorEscritura = 1
+            case .success(let json):
+                let success = json["success"].int ?? 0
+                switch success {
+                case 1:
+                    // DATOS GUARDADOS
+                    toastViewModel.showCustomToast(with: "Información Enviada", tipoColor: .verde)
+                    selectedImage = nil
+                    NombreCompleto = ""
+                    Telefono = ""
+                    Direccion = ""
+                    NotaOpcional = ""
+                    checkedEscritura = false
+                    popDatosEnviados = true
+                default:
+                    mensajeError()
+                }
+                
+            case .failure(_):
+                mensajeError()
             }
-            
-            let parameters: [String: Any] = [
-                "iduser": idCliente,
-                "nombre": NombreCompleto,
-                "telefono": Telefono,
-                "direccion": Direccion,
-                "escritura": valorEscritura,
-                "nota": NotaOpcional,
-                "latitud": latitudFinal,
-                "longitud": longitudFinal
-            ]
-            
-            let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(idToken)"
-            ]
-            
-            AF.upload(multipartFormData: { multipartFormData in
-                if let imageData = image.jpegData(compressionQuality: 0.5) {
-                    multipartFormData.append(imageData, withName: "imagen", fileName: "imagen.jpg", mimeType: "image/jpeg")
-                }
-                for (key, value) in parameters {
-                    if let data = "\(value)".data(using: .utf8) {
-                        multipartFormData.append(data, withName: key)
-                    }
-                }
-            }, to: encodeURL, method: .post, headers: headers)
-            .responseData { response in
-                switch response.result {
-                case .success(let data):
-                    
-                    openLoadingSpinner = false
-                    
-                    let json = JSON(data)
-                    if let successValue = json["success"].int {
-                        if successValue == 1 {
-                            
-                            // DATOS GUARDADOS
-                            showCustomToast(with: "Información Enviada", tipoColor: 2)
-                            selectedImage = nil
-                            actualizaraImagen = false
-                            NombreCompleto = ""
-                            Telefono = ""
-                            Direccion = ""
-                            NotaOpcional = ""
-                            checkedEscritura = false
-                            popDatosEnviados = true
-                            
-                        } else {
-                            showCustomToast(with: "Error", tipoColor: 1)
-                        }
-                    } else {
-                        showCustomToast(with: "Error", tipoColor: 1)
-                    }
-                case .failure(_):
-                    openLoadingSpinner = false
-                    showCustomToast(with: "Error", tipoColor: 1)
-                }
-            }
-        } else {
-            showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
         }
     }
     
@@ -321,100 +284,34 @@ struct SolicitudTalaArbolView: View {
         locationManager.getLocation()
         
         guard let image = selectedImage else {
-            showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
+            toastViewModel.showCustomToast(with: "Seleccionar Imagen", tipoColor: .gris)
             return
         }
         
-        if actualizaraImagen {
-            
-            openLoadingSpinner = true
-            
-            let encodeURL = apiEnviarDatosDenunciaTalaArbol
-            
-            let parameters: [String: Any] = [
-                "iduser": idCliente,
-                "nota": NotaOpcional,
-                "latitud": latitudFinal,
-                "longitud": longitudFinal
-            ]
-            
-            let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(idToken)"
-            ]
-            
-            AF.upload(multipartFormData: { multipartFormData in
-                if let imageData = image.jpegData(compressionQuality: 0.8) {
-                    multipartFormData.append(imageData, withName: "imagen", fileName: "imagen.jpg", mimeType: "image/jpeg")
-                }
-                for (key, value) in parameters {
-                    if let data = "\(value)".data(using: .utf8) {
-                        multipartFormData.append(data, withName: key)
-                    }
-                }
-            }, to: encodeURL, method: .post, headers: headers)
-            .responseData { response in
-                switch response.result {
-                case .success(let data):
+        openLoadingSpinner = true
+        
+        viewModelDenuncia.enviarDenunciaTalaRX(idToken: idToken, idCliente: idCliente, nota: NotaOpcional, latitud: latitudFinal, longitud: longitudFinal, selectedImage: selectedImage){ result in
+            switch result {
+                
+            case .success(let json):
+                let success = json["success"].int ?? 0
+                switch success {
+                case 1:
                     
-                    openLoadingSpinner = false
-                    
-                    let json = JSON(data)
-                    if let successValue = json["success"].int {
-                        if successValue == 1 {
-                            
-                            // DATOS GUARDADOS
-                            showCustomToast(with: "Información Enviada", tipoColor: 2)
-                            selectedImage = nil
-                            actualizaraImagen = false
-                            NotaOpcional = ""
-                            popDatosEnviados = true
-                            
-                        } else {
-                            showCustomToast(with: "Error", tipoColor: 1)
-                        }
-                    } else {
-                        showCustomToast(with: "Error", tipoColor: 1)
-                    }
-                case .failure(_):
-                    openLoadingSpinner = false
-                    showCustomToast(with: "Error", tipoColor: 1)
+                    // DATOS GUARDADOS
+                    toastViewModel.showCustomToast(with: "Información Enviada", tipoColor: .verde)
+                    selectedImage = nil
+                    NotaOpcional = ""
+                    popDatosEnviados = true
+                default:
+                    mensajeError()
                 }
+                
+            case .failure(_):
+                mensajeError()
             }
-        } else {
-            showCustomToast(with: "Seleccionar Imagen", tipoColor: 1)
         }
-        
-        
     }
-    
-    
-    // Función para configurar y mostrar el toast
-    func showCustomToast(with mensaje: String, tipoColor: Int) {
-        
-        let titleColor: Color
-        
-        if tipoColor == 1 {
-            titleColor = Color("ColorAzulToast")
-        } else {
-            titleColor = Color("cverde")
-        }
-        
-        customToast = AlertToast(
-            displayMode: .banner(.pop),
-            type: .regular,
-            title: mensaje,
-            subTitle: nil,
-            style: .style(
-                backgroundColor: titleColor,
-                titleColor: Color.white,
-                subTitleColor: Color.blue,
-                titleFont: .headline,
-                subTitleFont: nil
-            )
-        )
-        showToastBool = true
-    }
-    
     
     
     // verificar permiso para galeria
@@ -468,9 +365,6 @@ struct SolicitudTalaArbolView: View {
             print("Camara no disponible")
         }
     }
-    
-    
-    
 }
 
 
@@ -489,6 +383,7 @@ struct VistaSolicitudTala: View {
         HStack {
             Text("Nombre Completo")
                 .bold()
+                .foregroundColor(.black)
             Spacer()
         }
         .padding(.top, 35)
@@ -511,6 +406,7 @@ struct VistaSolicitudTala: View {
             HStack {
                 Text("Teléfono")
                     .bold()
+                    .foregroundColor(.black)
                 Spacer()
             }
             .padding(.top, 30)
@@ -532,6 +428,7 @@ struct VistaSolicitudTala: View {
             HStack {
                 Text("Dirección")
                     .bold()
+                    .foregroundColor(.black)
                 Spacer()
             }
             .padding(.top, 30)
@@ -563,6 +460,7 @@ struct VistaFotografia: View {
         HStack {
             Text("Imagen del Árbol")
                 .bold()
+                .foregroundColor(.black)
             Spacer()
         }
         .padding(.top, 30)
@@ -587,6 +485,7 @@ struct VistaFotografia: View {
         HStack {
             Text("Nota (Opcional)")
                 .bold()
+                .foregroundColor(.black)
             Spacer()
         }
         .padding(.top, 45)

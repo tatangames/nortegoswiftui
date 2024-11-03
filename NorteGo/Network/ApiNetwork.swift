@@ -9,11 +9,11 @@ import Foundation
 
 let apiVersionApp = "v. 1.0.0"
 
-/// utilizado cuando hay un nuevo servicio
+// utilizado cuando hay un nuevo servicio
 let apiURLAppleStore = "https://apps.apple.com/app/nortego/idxxxxxx"
 
-let baseUrl:String = "http://192.168.1.29:8080/api/"
-let baseUrlImagen: String = "http://192.168.1.29:8080/storage/archivos/"
+let baseUrl = "http://145.223.120.223/api/"
+let baseUrlImagen = "http://145.223.120.223/storage/archivos/"
 
 let apiVerificarTelefono = baseUrl+"app/verificacion/telefono"
 let apiReintentoSMS = baseUrl+"app/reintento/telefono"
