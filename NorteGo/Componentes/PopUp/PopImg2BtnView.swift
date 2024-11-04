@@ -25,7 +25,7 @@ struct PopImg2BtnView: View {
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture {
                     withAnimation {
-                        isActive = false
+                        //isActive = false
                     }
                 }
             

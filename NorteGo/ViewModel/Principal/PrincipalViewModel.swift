@@ -18,7 +18,7 @@ class PrincipalViewModel: ObservableObject {
     
     private let disposeBag = DisposeBag()
      
-    func principalRX(idToken: String, completion: @escaping (Result<JSON, Error>) -> Void) {
+    func principalRX(idToken: String, onesignal: String, completion: @escaping (Result<JSON, Error>) -> Void) {
         // Verificar si ya hay una solicitud en curso
         guard !isRequestInProgress else { return }
         
@@ -29,7 +29,8 @@ class PrincipalViewModel: ObservableObject {
         let encodeURL = apiPrincipal
         let headers: HTTPHeaders = ["Authorization": "Bearer \(idToken)"]
         let parameters: [String: Any] = [
-            "iduser": 0
+            "onesignal": onesignal,
+            "device": 2 // para identificar que estoy solicitando informacion para iphone
         ]
         
         Observable<JSON>.create { observer in

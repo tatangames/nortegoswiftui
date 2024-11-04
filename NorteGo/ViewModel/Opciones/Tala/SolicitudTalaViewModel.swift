@@ -56,7 +56,7 @@ class SolicitudTalaViewModel: ObservableObject {
             AF.upload(multipartFormData: { multipartFormData in
                 // Añadir la imagen si está disponible
                 if let imageData = selectedImage?.jpegData(compressionQuality: 0.5) {
-                    multipartFormData.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpeg")
+                    multipartFormData.append(imageData, withName: "imagen", fileName: "imagen.jpg", mimeType: "image/jpeg")
                 }
                 
                 // Añadir otros parámetros

@@ -240,7 +240,7 @@ struct SolicitudTalaArbolView: View {
             return
         }
         
-        guard let image = selectedImage else {
+        guard selectedImage != nil else {
             toastViewModel.showCustomToast(with: "Seleccionar Imagen", tipoColor: .gris)
             return
         }
@@ -283,7 +283,7 @@ struct SolicitudTalaArbolView: View {
         
         locationManager.getLocation()
         
-        guard let image = selectedImage else {
+        guard selectedImage != nil else {
             toastViewModel.showCustomToast(with: "Seleccionar Imagen", tipoColor: .gris)
             return
         }

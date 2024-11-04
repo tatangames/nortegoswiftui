@@ -11,6 +11,5 @@ import Foundation
 struct DatosGuardadosKeys {
     static let idCliente = "ID"
     static let idToken = "TOKEN"
-    
-    
+    static let idAppVersion = "IDAPPVERSION"
 }

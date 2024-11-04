@@ -16,6 +16,7 @@ import SDWebImageSwiftUI
 struct PrincipalView: View {
     
     @AppStorage(DatosGuardadosKeys.idToken) private var idToken: String = ""
+    @AppStorage(DatosGuardadosKeys.idAppVersion) private var idAppVersionLocal: String = ""
     
     @State private var width = UIScreen.main.bounds.width - 90
     @State private var x = -UIScreen.main.bounds.width + 90
@@ -27,11 +28,13 @@ struct PrincipalView: View {
     @State private var datosCargados:Bool = false
     @State private var popNuevoServicio:Bool = false
     @State private var popNuevaActualizacion: Bool = false
-    @State private var appVersion:String = Bundle.main.appVersion
     @State private var popVista:Bool = false
     @State private var vistaSeleccionada: AnyView? = nil
     @StateObject var viewModel = PrincipalViewModel()
     @StateObject private var toastViewModel = ToastViewModel()
+    @State private var onesignal: String = ""
+    @State private var boolSeguroVersionBackend:Bool = true
+    @State private var urlAppStore:String = ""
     
     @State var itemsSlider: [ModeloSlider] = []
     @State var itemsTipoServicioArray: [ModeloTipoServicioArray] = []
@@ -84,7 +87,7 @@ struct PrincipalView: View {
                 // pop nueva actualizacion
                 if popNuevaActualizacion {
                     PopImg2BtnView(isActive: $popNuevaActualizacion, imagen: .constant("infocolor"), descripcion: .constant("Hay una nueva versión disponible. ¿Desea actualizar ahora?"), txtCancelar: .constant("No"), txtAceptar: .constant("Actualizar"), cancelAction: {}, acceptAction: {
-                        if let url = URL(string: apiURLAppleStore) {
+                        if let url = URL(string: urlAppStore) {
                             UIApplication.shared.open(url)
                         }
                     }).zIndex(1)
@@ -93,7 +96,7 @@ struct PrincipalView: View {
                 // cuando haya nueva version
                 if popNuevoServicio {
                     PopImg2BtnView(isActive: $popNuevoServicio, imagen: .constant("infocolor"), descripcion: .constant("Por favor, actualiza la aplicación para acceder a este servicio"), txtCancelar: .constant("No"), txtAceptar: .constant("Actualizar"), cancelAction: {popNuevoServicio = false}, acceptAction: {
-                        if let url = URL(string: apiURLAppleStore) {
+                        if let url = URL(string: urlAppStore) {
                             UIApplication.shared.open(url)
                         }
                     }).zIndex(1)
@@ -177,7 +180,7 @@ struct PrincipalView: View {
         
         openLoadingSpinner = true
         
-        viewModel.principalRX(idToken: idToken) { result in
+        viewModel.principalRX(idToken: idToken, onesignal: onesignal) { result in
             switch result {
             case .success(let json):
                 let success = json["success"].int ?? 0
@@ -186,15 +189,6 @@ struct PrincipalView: View {
                     // numero bloqueado
                     popNumeroBloqueado = true
                 case 2:
-                    let _codeiphone = json["versionios"].string ?? ""
-                    let _modalios = json["modalios"].int ?? 0
-                    
-                    // verificar si hay actualizacion
-                    if _modalios == 1{
-                        if _codeiphone != appVersion {
-                            popNuevaActualizacion = true
-                        }
-                    }
                     
                     json["slider"].array?.forEach({ (dataArray) in
                         
@@ -229,6 +223,33 @@ struct PrincipalView: View {
                         itemsTipoServicioArray.append(_arrayTipoServicioArray)
                         itemsTipoServicio.removeAll()
                     })
+                    
+                    let _versionIOS = json["versionios"].string ?? ""
+                    let _modalios = json["modalios"].int ?? 0
+                    let _urlApp = json["urlapplestore"].string ?? ""
+                    
+                    urlAppStore = _urlApp
+                    var nuevaVersion = true
+                    
+                    // esto se hace una sola vez cuando la app es nueva
+                    if(idAppVersionLocal.isEmpty){
+                        boolSeguroVersionBackend = false
+                        nuevaVersion = false
+                        idAppVersionLocal = _versionIOS
+                    }
+                                        
+                    
+                    // verificar si hay actualizacion
+                    if _modalios == 1{
+                        if ((idAppVersionLocal != _versionIOS) && boolSeguroVersionBackend) {
+                            nuevaVersion = true
+                            popNuevaActualizacion = true
+                        }
+                    }
+                    
+                    if(nuevaVersion){
+                        idAppVersionLocal = _versionIOS
+                    }
                     
                     pantallaCargada = true
                     

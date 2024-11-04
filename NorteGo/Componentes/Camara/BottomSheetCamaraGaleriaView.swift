@@ -28,7 +28,7 @@ struct BottomSheetCamaraGaleriaView: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     .bold()
-                    .background(Color.blue)
+                    .background(AppColors.ColorAzulGob)
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }
@@ -42,7 +42,7 @@ struct BottomSheetCamaraGaleriaView: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     .bold()
-                    .background(Color.blue)
+                    .background(AppColors.ColorAzulGob)
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }
