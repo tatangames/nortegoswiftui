@@ -12,6 +12,7 @@
 		713DEF752CDA7BAE006129F3 /* OneSignalExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 713DEF742CDA7BAE006129F3 /* OneSignalExtension */; };
 		713DEF772CDA7BAE006129F3 /* OneSignalFramework in Frameworks */ = {isa = PBXBuildFile; productRef = 713DEF762CDA7BAE006129F3 /* OneSignalFramework */; };
 		713DEF792CDA7BAE006129F3 /* OneSignalInAppMessages in Frameworks */ = {isa = PBXBuildFile; productRef = 713DEF782CDA7BAE006129F3 /* OneSignalInAppMessages */; };
+		713DEF802CDAB3EC006129F3 /* OTPView in Frameworks */ = {isa = PBXBuildFile; productRef = 713DEF7F2CDAB3EC006129F3 /* OTPView */; };
 		7BC6FDB0152C8A76593D2EEC /* Pods_NorteGo_NorteGoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D063BC8B810ECF68399660E /* Pods_NorteGo_NorteGoUITests.framework */; };
 		8F05E88D2C72749700F720A3 /* PopImg2BtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F05E88C2C72749700F720A3 /* PopImg2BtnView.swift */; };
 		8F05E88F2C72807F00F720A3 /* PopImg1BtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F05E88E2C72807F00F720A3 /* PopImg1BtnView.swift */; };
@@ -206,6 +207,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				713DEF792CDA7BAE006129F3 /* OneSignalInAppMessages in Frameworks */,
+				713DEF802CDAB3EC006129F3 /* OTPView in Frameworks */,
 				713DEF772CDA7BAE006129F3 /* OneSignalFramework in Frameworks */,
 				152B34EFB3FDFFA30A464E47 /* Pods_NorteGo.framework in Frameworks */,
 			);
@@ -700,6 +702,7 @@
 			mainGroup = 8F7CD7F82C7019C100BD7410;
 			packageReferences = (
 				713DEF732CDA7BAE006129F3 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
+				713DEF7E2CDAB3EC006129F3 /* XCRemoteSwiftPackageReference "otpview-swiftui" */,
 			);
 			productRefGroup = 8F7CD8022C7019C200BD7410 /* Products */;
 			projectDirPath = "";
@@ -1354,6 +1357,14 @@
 				minimumVersion = 5.2.7;
 			};
 		};
+		713DEF7E2CDAB3EC006129F3 /* XCRemoteSwiftPackageReference "otpview-swiftui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mukeshsolanki/otpview-swiftui.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1371,6 +1382,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 713DEF732CDA7BAE006129F3 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;
 			productName = OneSignalInAppMessages;
+		};
+		713DEF7F2CDAB3EC006129F3 /* OTPView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 713DEF7E2CDAB3EC006129F3 /* XCRemoteSwiftPackageReference "otpview-swiftui" */;
+			productName = OTPView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,6 +9,7 @@ import SwiftyJSON
 import RxSwift
 import Alamofire
 import AlertToast
+import OTPView
 
 struct CodigoOtpView: View {
     
@@ -57,9 +58,20 @@ struct CodigoOtpView: View {
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
                         
-                        OTPInput(numberOfFields: 6, otpCode: $otpCode)
-                            .padding(.top, 25)
-                                            
+                      
+                        
+                        OTPInput(
+                               activeIndicatorColor: .blue,
+                               inactiveIndicatorColor: .gray,
+                               length: 6
+                           ) { code in
+                               otpCode = code // Actualiza otpCode con el valor ingresado
+                               print("Código OTP ingresado: \(code)")
+                           }
+                           .padding()
+                        
+                        
+                        
                         Text(timerViewModel.tiempoSegundo == 0 ? "Reenviar Código" : "Reintentar en \(timerViewModel.tiempoSegundo)")
                             .font(.custom("Montserrat-Medium", size: 16))
                             .padding()

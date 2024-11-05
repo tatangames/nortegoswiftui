@@ -1,5 +1,5 @@
 {
-  "originHash" : "fe10aafbaf409842f476e8822e8d586ae13fa97ca251345350315549123c6d78",
+  "originHash" : "9466c91b866c51dff7be0744be6811e6853eb2906991e7b44cea6d34feec9c4b",
   "pins" : [
     {
       "identity" : "onesignal-xcframework",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "5f4a9185333f4301522bdd8d3dbb705e8e371625",
         "version" : "5.2.7"
+      }
+    },
+    {
+      "identity" : "otpview-swiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mukeshsolanki/otpview-swiftui.git",
+      "state" : {
+        "revision" : "a4b5e210ffce6ff5b7889c212939df25a3c24dd4",
+        "version" : "1.0.0"
       }
     }
   ],

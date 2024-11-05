@@ -9,103 +9,84 @@ import SwiftUI
 import UIKit
 import UserNotifications
 
-struct OTPInput: View {
-    let numberOfFields: Int
-    @Binding var otpCode: String
-    @StateObject private var smsDetector = SMSDetector()
-    @State private var enterValue: [String]
-    @FocusState private var fieldFocus: Int?
-    @State private var showPermissionAlert = false
-
-    init(numberOfFields: Int, otpCode: Binding<String>) {
-        self.numberOfFields = numberOfFields
-        self._otpCode = otpCode
-        self._enterValue = State(initialValue: Array(repeating: "", count: numberOfFields))
+public struct OTPInput: View {
+    
+    private var activeIndicatorColor: Color
+    private var inactiveIndicatorColor: Color
+    private let doSomething: (String) -> Void
+    private let length: Int
+    
+    @State private var otpText = ""
+    @FocusState private var isKeyboardShowing: Bool
+    
+    public init(activeIndicatorColor: Color, inactiveIndicatorColor: Color, length: Int, doSomething: @escaping (String) -> Void) {
+        self.activeIndicatorColor = activeIndicatorColor
+        self.inactiveIndicatorColor = inactiveIndicatorColor
+        self.length = length
+        self.doSomething = doSomething
     }
-
-    var body: some View {
-        VStack {
-            HStack(spacing: 10) {
-                ForEach(0..<numberOfFields, id: \.self) { index in
-                    TextField("", text: $enterValue[index])
-                        .keyboardType(.numberPad)
-                        .frame(width: 48, height: 48)
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(5)
-                        .multilineTextAlignment(.center)
-                        .focused($fieldFocus, equals: index)
-                        .onChange(of: enterValue[index]) { newValue in
-                            handleInputChange(at: index, with: newValue)
-                        }
-                        .onTapGesture {
-                            fieldFocus = index
-                        }
+    
+    public var body: some View {
+        HStack(spacing: 10) {
+            ForEach(0..<length, id: \.self) { index in
+                OTPTextBox(index)
+            }
+        }
+        .background {
+            TextField("", text: $otpText)
+                .keyboardType(.numberPad)
+                .textContentType(.oneTimeCode)
+                .focused($isKeyboardShowing)
+                .onChange(of: otpText) { newValue in
+                    limitTextFieldInput(newValue)
                 }
-            }
-        }
-        .onChange(of: enterValue) { _ in
-            otpCode = enterValue.joined()
-        }
-        .onChange(of: smsDetector.smsOTPCode) { newCode in
-            if newCode.count == numberOfFields {
-                // Actualizar los campos con el código recibido
-                for (index, char) in newCode.enumerated() {
-                    enterValue[index] = String(char)
+                .onAppear {
+                    DispatchQueue.main.async {
+                        isKeyboardShowing = true
+                    }
                 }
-                otpCode = newCode
-            }
+                .frame(width: 1, height: 1) // Ocultar el TextField
+                .opacity(0.01)
         }
-        .onAppear {
-            fieldFocus = 0
-            checkNotificationPermissions()
-        }
-        .alert("Permisos Necesarios", isPresented: $showPermissionAlert) {
-            Button("Configuración", role: .none) {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
-                }
-            }
-            Button("Cancelar", role: .cancel) {}
-        } message: {
-            Text("Para detectar automáticamente el código SMS, necesitamos permiso para recibir notificaciones. Por favor, habilita los permisos en la configuración.")
-        }
-    }
-
-    private func handleInputChange(at index: Int, with newValue: String) {
-        if newValue.count > 1 {
-            enterValue[index] = String(newValue.last!)
-        }
-
-        if !enterValue[index].isEmpty {
-            if index < numberOfFields - 1 {
-                fieldFocus = index + 1
-            }
-        } else if fieldFocus == index && index > 0 && enterValue[index].isEmpty {
-            fieldFocus = index - 1
-            enterValue[index] = ""
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isKeyboardShowing = true
         }
     }
     
-    private func checkNotificationPermissions() {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            DispatchQueue.main.async {
-                switch settings.authorizationStatus {
-                case .notDetermined:
-                    // Solicitar permisos
-                    smsDetector.registerSMSObserver()
-                case .denied:
-                    // Mostrar alerta para ir a configuración
-                    showPermissionAlert = true
-                case .authorized, .provisional, .ephemeral:
-                    // Ya tenemos permisos, registrar el observador
-                    smsDetector.registerSMSObserver()
-                @unknown default:
-                    break
-                }
+    @ViewBuilder
+    func OTPTextBox(_ index: Int) -> some View {
+        ZStack {
+            if otpText.count > index {
+                let char = otpText[otpText.index(otpText.startIndex, offsetBy: index)]
+                Text(String(char))
+            } else {
+                Text(" ")
             }
+        }
+        .frame(width: 45, height: 45)
+        .background {
+            let isActive = isKeyboardShowing && otpText.count == index
+            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                .stroke(isActive ? activeIndicatorColor : inactiveIndicatorColor, lineWidth: 2)
+                .animation(.easeInOut(duration: 0.2), value: isActive)
+        }
+    }
+    
+    private func limitTextFieldInput(_ newValue: String) {
+        if newValue.count > length {
+            otpText = String(newValue.prefix(length))
+        } else {
+            otpText = newValue
+        }
+        
+        if otpText.count == length {
+            doSomething(otpText)
         }
     }
 }
+
+
 
 class SMSDetector: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
     @Published var smsOTPCode: String = ""
