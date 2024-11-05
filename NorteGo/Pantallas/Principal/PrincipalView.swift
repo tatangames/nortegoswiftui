@@ -229,30 +229,25 @@ struct PrincipalView: View {
                     let _urlApp = json["urlapplestore"].string ?? ""
                     
                     urlAppStore = _urlApp
-                    var nuevaVersion = true
+                   
                     
                     // esto se hace una sola vez cuando la app es nueva
                     if(idAppVersionLocal.isEmpty){
                         boolSeguroVersionBackend = false
-                        nuevaVersion = false
                         idAppVersionLocal = _versionIOS
                     }
-                                        
                     
                     // verificar si hay actualizacion
                     if _modalios == 1{
                         if ((idAppVersionLocal != _versionIOS) && boolSeguroVersionBackend) {
-                            nuevaVersion = true
                             popNuevaActualizacion = true
                         }
                     }
                     
-                    if(nuevaVersion){
-                        idAppVersionLocal = _versionIOS
-                    }
-                    
+                    // SIEMPRE GUARDAR LA VERSION BACKEND
+                    idAppVersionLocal = _versionIOS
+                                        
                     pantallaCargada = true
-                    
                 default:
                     mensajeError()
                 }
