@@ -99,7 +99,7 @@ struct SolicitudTalaArbolView: View {
                         }
                         
                     }) {
-                        Text("ENVIAR")
+                        Text(selectedOption == 1 ? "Enviar Solicitud" : "Enviar Denuncia")
                             .font(.custom("LiberationSans-Bold", size: 16))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)

@@ -94,7 +94,7 @@ struct SolvenciaCatastroView: View {
                     Button(action: { // btn enviar datos
                         serverEnviarDatos()
                     }) {
-                        Text("ENVIAR")
+                        Text("Enviar Solicitud")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)

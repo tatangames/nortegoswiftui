@@ -29,6 +29,7 @@ class LoginViewModel: ObservableObject {
             let encodeURL = apiVerificarTelefono
             let parameters: [String: Any] = [
                 "telefono": telefono,
+                "device": 2 // esto para identificar que es peticion por iphone
             ]
             
             let request = AF.request(encodeURL, method: .post, parameters: parameters)

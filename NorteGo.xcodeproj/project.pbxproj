@@ -13,6 +13,7 @@
 		713DEF772CDA7BAE006129F3 /* OneSignalFramework in Frameworks */ = {isa = PBXBuildFile; productRef = 713DEF762CDA7BAE006129F3 /* OneSignalFramework */; };
 		713DEF792CDA7BAE006129F3 /* OneSignalInAppMessages in Frameworks */ = {isa = PBXBuildFile; productRef = 713DEF782CDA7BAE006129F3 /* OneSignalInAppMessages */; };
 		713DEF802CDAB3EC006129F3 /* OTPView in Frameworks */ = {isa = PBXBuildFile; productRef = 713DEF7F2CDAB3EC006129F3 /* OTPView */; };
+		71897C932CDBC04400BD3B9E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 71897C922CDBC04400BD3B9E /* PrivacyInfo.xcprivacy */; };
 		7BC6FDB0152C8A76593D2EEC /* Pods_NorteGo_NorteGoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D063BC8B810ECF68399660E /* Pods_NorteGo_NorteGoUITests.framework */; };
 		8F05E88D2C72749700F720A3 /* PopImg2BtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F05E88C2C72749700F720A3 /* PopImg2BtnView.swift */; };
 		8F05E88F2C72807F00F720A3 /* PopImg1BtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F05E88E2C72807F00F720A3 /* PopImg1BtnView.swift */; };
@@ -115,6 +116,7 @@
 		3F5F74A004DE0153E77970F9 /* Pods_NorteGo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NorteGo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		713DEF612CDA7866006129F3 /* NorteGo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NorteGo.entitlements; sourceTree = "<group>"; };
 		713DEF662CDA790B006129F3 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		71897C922CDBC04400BD3B9E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8F05E88C2C72749700F720A3 /* PopImg2BtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopImg2BtnView.swift; sourceTree = "<group>"; };
 		8F05E88E2C72807F00F720A3 /* PopImg1BtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopImg1BtnView.swift; sourceTree = "<group>"; };
 		8F05E8902C72A79500F720A3 /* StructReutilizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructReutilizable.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				8F7CD82E2C701C7200BD7410 /* Pantallas */,
 				8F7CD8042C7019C200BD7410 /* NorteGoApp.swift */,
 				8F7CD80A2C7019C300BD7410 /* Preview Content */,
+				71897C922CDBC04400BD3B9E /* PrivacyInfo.xcprivacy */,
 			);
 			path = NorteGo;
 			sourceTree = "<group>";
@@ -674,6 +677,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1530;
+				ORGANIZATIONNAME = "Alcaldia de Santa Ana Norte";
 				TargetAttributes = {
 					713DEF652CDA790B006129F3 = {
 						CreatedOnToolsVersion = 16.1;
@@ -729,6 +733,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F7CD83F2C703C7200BD7410 /* liberation_sans_bold.ttf in Resources */,
+				71897C932CDBC04400BD3B9E /* PrivacyInfo.xcprivacy in Resources */,
 				8F7CD80C2C7019C300BD7410 /* Preview Assets.xcassets in Resources */,
 				8F7CD8402C703C7200BD7410 /* montserratregular.ttf in Resources */,
 				8F7CD8092C7019C300BD7410 /* Assets.xcassets in Resources */,
@@ -971,7 +976,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alcaldiasantaananorte.NorteGo.OneSignalNotificationServiceExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santaananortemetapan.NorteGo.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1002,7 +1007,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alcaldiasantaananorte.NorteGo.OneSignalNotificationServiceExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santaananortemetapan.NorteGo.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1141,19 +1146,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NorteGo/NorteGo.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"NorteGo/Preview Content\"";
 				DEVELOPMENT_TEAM = Q42L849MJ4;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NorteGo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NorteGo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Necesitamos acceso a la cámara para tomar fotos";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "La App requiere acceso a su localización";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "La App requiere acceso a su localización";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Necesitamos acceso a la galería para seleccionar fotos";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Se requiere acceso a la cámara para adjuntar imágenes como evidencia en tu solicitud";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Se utiliza tu ubicación para adjuntarla a la solicitud y atenderla con precisión";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Se utiliza tu ubicación para adjuntarla a la solicitud y atenderla con precisión";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Se requiere acceso a tu galería para adjuntar imágenes como evidencia en tu denuncia";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1163,9 +1170,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alcaldiasantaananorte.NorteGo;
+				MARKETING_VERSION = 1.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santaananortemetapan.NorteGo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1183,19 +1191,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NorteGo/NorteGo.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"NorteGo/Preview Content\"";
 				DEVELOPMENT_TEAM = Q42L849MJ4;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NorteGo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NorteGo;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Necesitamos acceso a la cámara para tomar fotos";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "La App requiere acceso a su localización";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "La App requiere acceso a su localización";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Necesitamos acceso a la galería para seleccionar fotos";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Se requiere acceso a la cámara para adjuntar imágenes como evidencia en tu solicitud";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Se utiliza tu ubicación para adjuntarla a la solicitud y atenderla con precisión";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Se utiliza tu ubicación para adjuntarla a la solicitud y atenderla con precisión";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Se requiere acceso a tu galería para adjuntar imágenes como evidencia en tu denuncia";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1205,9 +1215,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alcaldiasantaananorte.NorteGo;
+				MARKETING_VERSION = 1.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.santaananortemetapan.NorteGo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

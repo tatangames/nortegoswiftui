@@ -12,6 +12,7 @@ import Alamofire
 import RxSwift
 import AlertToast
 import SDWebImageSwiftUI
+import OneSignalFramework
 
 struct PrincipalView: View {
     
@@ -32,7 +33,6 @@ struct PrincipalView: View {
     @State private var vistaSeleccionada: AnyView? = nil
     @StateObject var viewModel = PrincipalViewModel()
     @StateObject private var toastViewModel = ToastViewModel()
-    @State private var onesignal: String = ""
     @State private var boolSeguroVersionBackend:Bool = true
     @State private var urlAppStore:String = ""
     
@@ -165,6 +165,7 @@ struct PrincipalView: View {
     
     //*** FUNCIONES ****
     
+    
     func salirSplashView(){
         idToken = ""
         
@@ -179,6 +180,9 @@ struct PrincipalView: View {
     func serverPrincipal(){
         
         openLoadingSpinner = true
+        
+        
+        let onesignal: String = OneSignal.User.pushSubscription.id ?? ""
         
         viewModel.principalRX(idToken: idToken, onesignal: onesignal) { result in
             switch result {
